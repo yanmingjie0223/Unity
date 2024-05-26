@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="750,1334">
+  <displayList>
+    <image id="n6_qjx8" name="n6" src="bg9v1" fileName="image/bagIm.png" xy="332,1101">
+      <relation target="" sidePair="bottom-bottom"/>
+    </image>
+    <component id="n7_qjx8" name="btn" src="bg9v0" fileName="btn/Button.xml" pkg="34dfamg7" xy="332,55" size="86,99">
+      <relation target="" sidePair="top-top"/>
+      <Button icon="ui://339no4o4bg9v1" selectedIcon="ui://339no4o4bg9v1"/>
+    </component>
+  </displayList>
+</component>

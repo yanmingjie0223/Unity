@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="615,387">
+  <displayList>
+    <image id="n0_jav4" name="n0" src="bg9v5" fileName="image/5.png" xy="0,0"/>
+    <component id="n2_jav4" name="closeBtn" src="bg9v0" fileName="btn/Button.xml" pkg="34dfamg7" xy="504,0" size="61,53">
+      <Button icon="ui://31k90usybg9v4"/>
+    </component>
+    <richtext id="n4_jyky" name="tf" xy="129,170" size="327,42" fontSize="30" ubb="true" autoSize="none" bold="true" text=""/>
+  </displayList>
+</component>
