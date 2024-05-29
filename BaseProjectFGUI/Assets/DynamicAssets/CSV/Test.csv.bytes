@@ -1,0 +1,7 @@
+配置测试,,,,,,,,,,,
+"唯一id,""","""个别数据""",描述,字符串数组,浮点型,浮点型数组,布尔,布尔数组,long类型,long类型数组,int64类型和long一样,int64类型数组
+int,int[],string,string[],float,float[],bool,bool[],long,long[],int64,int64[]
+id,data,des,cotents,vec,vecs,isShow,isShows,argL,argLs,argI,argIs
+1,2,""",好:""",55$号,1.99,1.99$8,1,1$True,88,88$66,88,88$66
+2,3$3,""",好:""!@",卡卡,4,4,TRUE,TRUE$false,9999,9999,9999,9999
+3,4,"~"",好:""!()",大一下,0.8888888,0.8888888$7.4,FALSE,0$1,2,2,2,2

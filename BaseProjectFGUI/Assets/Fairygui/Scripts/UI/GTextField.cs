@@ -16,6 +16,10 @@ namespace FairyGUI
         protected bool _updatingSize;
         protected Dictionary<string, string> _templateVars;
 
+        private Dictionary<string, string> _textI18nVars;
+        private string _textI18nKey;
+        private StringBuilder _textI18n;
+
         public GTextField()
             : base()
         {
@@ -30,6 +34,10 @@ namespace FairyGUI
             _text = string.Empty;
             _textField.autoSize = AutoSizeType.Both;
             _textField.wordWrap = false;
+
+            _textI18nVars = new();
+            _textI18nKey = string.Empty;
+            _textI18n = new();
         }
 
         override protected void CreateDisplayObject()
@@ -121,6 +129,38 @@ namespace FairyGUI
         public bool HasCharacter(char ch)
         {
             return _textField.HasCharacter(ch);
+        }
+
+        public string textI18nKey
+        {
+            set
+            {
+                _textI18nKey ??= value;
+            }
+            get { return _textI18nKey; }
+        }
+
+        public void SetTextI18nVar(string var, string value)
+        {
+            if (!_textI18nVars.ContainsKey(var))
+            {
+                _textI18nVars.Add(var, value);
+            }
+            else
+            {
+                _textI18nVars[var] = value;
+            }
+        }
+
+        public void RefreshI18nText(string lang)
+        {
+            _textI18n.Clear();
+            _textI18n.Append(lang);
+            foreach (var item in _textI18nVars)
+            {
+                _textI18n.Replace("${" + item.Key + "}", item.Value);
+            }
+            text = _textI18n.ToString();
         }
 
         protected string ParseTemplate(string template)

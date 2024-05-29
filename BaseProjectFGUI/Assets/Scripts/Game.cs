@@ -19,13 +19,18 @@ public class Game : MonoBehaviour
     }
 
     private void InitializeModel()
-    {
-
-    }
+    { }
 
     private void InitializeStart()
     {
-        ViewManager.GetInstance().Show(typeof(MainView));
+        CSVManager.GetInstance().Initialize((bool isError) =>
+        {
+            if (!isError)
+            {
+
+                ViewManager.GetInstance().Show(typeof(MainView));
+            }
+        });
     }
 
 }
