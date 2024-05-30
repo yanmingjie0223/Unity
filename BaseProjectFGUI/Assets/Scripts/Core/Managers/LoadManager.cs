@@ -1,3 +1,4 @@
+using Flame.CSV;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ public class LoadManager : MonoBehaviour
         string bundleName = resManager.GetBundleNmae(bundleType);
         if (BundleTypeName.Config == bundleName)
         {
-            StartCoroutine(CVSConfigLoader.Preload(start, progress, end));
+            StartCoroutine(CVSTableLoader.Preload(bundleName, start, progress, end));
         }
         else
         {
@@ -42,7 +43,7 @@ public class LoadManager : MonoBehaviour
     {
         if (BundleTypeName.Config == bundleName)
         {
-            StartCoroutine(CVSConfigLoader.Preload(start, progress, end));
+            StartCoroutine(CVSTableLoader.Preload(bundleName, start, progress, end));
         }
         else
         {

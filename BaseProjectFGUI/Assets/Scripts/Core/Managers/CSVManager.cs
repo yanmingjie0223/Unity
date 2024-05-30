@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Flame.CSV;
 
 public class CSVManager : Singleton<CSVManager>
 {
-    private readonly Dictionary<string, ICSVConfig> _csvDic = new();
+    private readonly Dictionary<string, ITable> _csvDic = new();
 
     public void Initialize(Action<bool> end)
     {
@@ -23,10 +24,10 @@ public class CSVManager : Singleton<CSVManager>
         );
     }
 
-    public T GetTable<T>() where T : ICSVConfig, new()
+    public T GetTable<T>() where T : ITable, new()
     {
         string name = typeof(T).Name;
-        _csvDic.TryGetValue(name, out ICSVConfig table);
+        _csvDic.TryGetValue(name, out ITable table);
         return (T)table;
     }
 
@@ -36,7 +37,7 @@ public class CSVManager : Singleton<CSVManager>
         InitializeCSVTable<LanguageTable>();
     }
 
-    private void InitializeCSVTable<T>() where T : ICSVConfig, new()
+    private void InitializeCSVTable<T>() where T : ITable, new()
     {
         var t = new T();
         t.Load();

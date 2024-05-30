@@ -1,5 +1,6 @@
 using FairyGUI;
 using UnityEngine;
+using Flame.CSV;
 
 public class MainView : BaseView
 {

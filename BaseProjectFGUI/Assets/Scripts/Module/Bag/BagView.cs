@@ -1,4 +1,5 @@
 ﻿using FairyGUI;
+using Flame.CSV;
 
 public class BagView : BaseView
 {
