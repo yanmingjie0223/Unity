@@ -19,7 +19,7 @@ public abstract class Singleton<T> where T : class, new()
     {
         if (instance != null)
         {
-            instance = null!;
+            instance = null;
         }
     }
 }

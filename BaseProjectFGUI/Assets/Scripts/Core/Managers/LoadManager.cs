@@ -21,7 +21,7 @@ public class LoadManager : MonoBehaviour
     {
         if (instance != null)
         {
-            instance = null!;
+            instance = null;
         }
     }
 

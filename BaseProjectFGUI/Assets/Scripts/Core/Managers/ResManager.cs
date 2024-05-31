@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 public class ResManager : Singleton<ResManager>
 {
 
-    private readonly Dictionary<string, Dictionary<string, Object>> bundleDic = new();
+    private readonly Dictionary<string, Dictionary<string, Object>> _bundleDic = new();
 
     /// <summary>
     /// 获取地址对应的资源对象
@@ -77,22 +77,22 @@ public class ResManager : Singleton<ResManager>
     public Dictionary<string, Object> GetBundleResDic(BundleType type)
     {
         var name = GetBundleNmae(type);
-        bundleDic.TryGetValue(name, out Dictionary<string, Object> dic);
+        _bundleDic.TryGetValue(name, out Dictionary<string, Object> dic);
         if (dic == null)
         {
             dic = new Dictionary<string, Object>();
-            bundleDic.Add(name, dic);
+            _bundleDic.Add(name, dic);
         }
         return dic;
     }
 
     public Dictionary<string, Object> GetBundleResDic(string name)
     {
-        bundleDic.TryGetValue(name, out Dictionary<string, Object> dic);
+        _bundleDic.TryGetValue(name, out Dictionary<string, Object> dic);
         if (dic == null)
         {
             dic = new Dictionary<string, Object>();
-            bundleDic.Add(name, dic);
+            _bundleDic.Add(name, dic);
         }
         return dic;
     }
@@ -102,7 +102,7 @@ public class ResManager : Singleton<ResManager>
     /// </summary>
     public void Destroy()
     {
-        foreach (var obj in bundleDic.Values)
+        foreach (var obj in _bundleDic.Values)
         {
             if (obj != null)
             {
@@ -115,7 +115,7 @@ public class ResManager : Singleton<ResManager>
                 }
             }
         }
-        bundleDic.Clear();
+        _bundleDic.Clear();
     }
 
 }

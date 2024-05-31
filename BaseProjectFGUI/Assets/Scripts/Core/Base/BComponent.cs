@@ -4,11 +4,6 @@ using FairyGUI.Utils;
 public class BComponent : GComponent
 {
 
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-    }
-
     public override void ConstructFromXML(XML xml)
     {
         ConstructFromXML(xml);

@@ -27,7 +27,6 @@ public class Game : MonoBehaviour
         {
             if (!isError)
             {
-
                 ViewManager.GetInstance().Show(typeof(MainView));
             }
         });

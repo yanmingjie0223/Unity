@@ -20,7 +20,7 @@ public class BagView : BaseView
 
     protected override void OnShown()
     {
-        //_tf.text = "繁城明月夜，踏路风做伴。";
+        //_tf.text = "繁城明月夜，踏路与风行。";
         //TypingEffect tef = new(_tf);
         //tef.Start();
         //tef.PrintAll(0.1f);

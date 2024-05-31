@@ -191,7 +191,12 @@ public class BaseView : BComponent
     public void Show()
     {
         _showStatus = ViewStatus.SHOWING;
-        InitializationStart();
+        if (_pkgName == "" || _resName == "")
+        {
+            return;
+        }
+
+        OnLoad();
     }
 
     public void Close()
@@ -337,13 +342,4 @@ public class BaseView : BComponent
         }
     }
 
-    private void InitializationStart()
-    {
-        if (_pkgName == "" || _resName == "")
-        {
-            return;
-        }
-
-        OnLoad();
-    }
 }

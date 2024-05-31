@@ -12,8 +12,6 @@ public class StageManager : Singleton<StageManager>
         var scale = FairyGUI.GRoot.inst.scale;
         var width = Screen.width / scale.x;
         var height = Screen.height / scale.y;
-
-
         _stageRect.Width = (int)width;
         _stageRect.Height = (int)height;
         _actionRect.Width = (int)width;
@@ -23,9 +21,6 @@ public class StageManager : Singleton<StageManager>
         var safe = Screen.safeArea;
         _safeRect.X = (int)safe.x;
         _safeRect.Y = (int)safe.y;
-        Debug.Log(_stageRect);
-        Debug.Log(_safeRect);
-        Debug.Log(FairyGUI.GRoot.inst.scale);
     }
 
     public Rectangle ActionRect
