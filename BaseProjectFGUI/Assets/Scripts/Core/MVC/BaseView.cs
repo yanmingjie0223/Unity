@@ -1,5 +1,6 @@
 ﻿using FairyGUI;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BaseView : BComponent
 {
@@ -295,6 +296,7 @@ public class BaseView : BComponent
         if (contentPane == null)
         {
             Destroy();
+            Debug.LogError("not found: " + _pkgName + "/" + _resName);
             return;
         }
 

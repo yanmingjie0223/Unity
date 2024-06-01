@@ -5,7 +5,8 @@ using Flame.CSV;
 public class MainView : BaseView
 {
 
-    private GButton _btn;
+    private GButton btnBag;
+    private GButton btnVideo;
 
     public MainView() : base(new() { "main", "common" }, "MainView", ViewType.VIEW, ViewLayerType.MIDDLE_LAYER)
     {
@@ -13,8 +14,10 @@ public class MainView : BaseView
 
     protected override void OnInit()
     {
-        _btn = contentPane.GetChild("btn").asButton;
-        _btn.onClick.Add(OnClickBtn);
+        btnBag = contentPane.GetChild("btnBag").asButton;
+        btnBag.onClick.Add(OnClickBag);
+        btnVideo = contentPane.GetChild("btnVideo").asButton;
+        btnVideo.onClick.Add(OnClickVideo);
     }
 
     protected override void OnShown()
@@ -38,8 +41,14 @@ public class MainView : BaseView
         });
     }
 
-    private void OnClickBtn()
+    private void OnClickBag()
     {
         ViewManager.GetInstance().Show(typeof(BagView));
+    }
+
+    private void OnClickVideo()
+    {
+        ViewManager.GetInstance().Close(typeof(MainView));
+        ViewManager.GetInstance().Show(typeof(VideoView));
     }
 }
