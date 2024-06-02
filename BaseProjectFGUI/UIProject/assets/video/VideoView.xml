@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<component size="1473,816">
+<component size="1920,1080">
   <displayList>
-    <loader id="n0_c8gv" name="mv" xy="256,188" size="960,440" align="center" vAlign="middle" fill="scale"/>
-    <component id="n1_c8gv" name="btnStart" src="c8gv2" fileName="btn/BtnTF.xml" pkg="34dfamg7" xy="320,720">
+    <loader id="n0_c8gv" name="mv" xy="480,270" size="960,540" align="center" vAlign="middle" fill="scale"/>
+    <component id="n1_c8gv" name="btnStart" src="c8gv2" fileName="btn/BtnTF.xml" pkg="34dfamg7" xy="574,888">
       <Button title="播放"/>
     </component>
-    <component id="n2_c8gv" name="btnStop" src="c8gv2" fileName="btn/BtnTF.xml" pkg="34dfamg7" xy="960,720">
+    <component id="n2_c8gv" name="btnStop" src="c8gv2" fileName="btn/BtnTF.xml" pkg="34dfamg7" xy="1215,888">
       <Button title="停止"/>
     </component>
   </displayList>

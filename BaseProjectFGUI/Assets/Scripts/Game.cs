@@ -1,3 +1,4 @@
+using Steamworks;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -8,6 +9,7 @@ public class Game : MonoBehaviour
         InitializeManager();
         InitializeModel();
         InitializeStart();
+        InitializeSteam();
     }
 
     private void InitializeManager()
@@ -30,6 +32,21 @@ public class Game : MonoBehaviour
                 ViewManager.GetInstance().Show(typeof(MainView));
             }
         });
+    }
+
+    private void InitializeSteam()
+    {
+        if (SteamManager.Initialized)
+        {
+            string name = SteamFriends.GetPersonaName();
+            Debug.Log("steam user name: " + name);
+            CSteamID id = SteamUser.GetSteamID();
+            Debug.Log("steam user id: " + id);
+        }
+        else
+        {
+            Debug.LogError("Steam is not running");
+        }
     }
 
 }

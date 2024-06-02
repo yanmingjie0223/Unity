@@ -1,10 +1,13 @@
 {
   "libview.firstColumnWidth": 283,
   "libview.iconScale": 0,
-  "doc.openedDocs": [],
+  "doc.openedDocs": [
+    "ui://szlkklkbc8gv0"
+  ],
   "auxline1": true,
   "canvasColor": 10066329,
   "auxline2": true,
+  "doc.activeDoc": "ui://szlkklkbc8gv0",
   "libview.twoColumn": false,
   "libview.expandedNodes": [],
   "snapToGrid": true,

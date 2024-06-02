@@ -11,7 +11,7 @@ public class VideoView : BaseView
     private VideoPlayer m_videoPlayer;
     private float m_maxValue = 0;
 
-    public VideoView() : base(new() { "video", "common" }, "VideoView", ViewType.X_WINDOW, ViewLayerType.MIDDLE_LAYER)
+    public VideoView() : base(new() { "video", "common" }, "VideoView", ViewType.VIEW, ViewLayerType.MIDDLE_LAYER)
     {
     }
 
