@@ -18,6 +18,7 @@ public class Game : MonoBehaviour
         FguiManager.GetInstance().Initialize();
         LayerManager.GetInstance().Initialize();
         ModelManager.GetInstance().Initialize();
+        ConfigManager.GetInstance().Initialize();
     }
 
     private void InitializeModel()
