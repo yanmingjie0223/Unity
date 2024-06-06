@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: cf1c5e5174f96eb4193cb87898dd21b0
-  m_SerializeEntries:
-  - m_GUID: 5537e878366e31f4ebc5b957c985c3df
-    m_Address: Assets/DynamicAssets/CSV
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 913fd26574c87704e89e802e67846529, type: 2}
   m_SchemaSet:

@@ -26,13 +26,7 @@ public class Game : MonoBehaviour
 
     private void InitializeStart()
     {
-        CSVManager.GetInstance().Initialize((bool isError) =>
-        {
-            if (!isError)
-            {
-                ViewManager.GetInstance().Show(typeof(MainView));
-            }
-        });
+        ViewManager.GetInstance().Show(typeof(MainView));
     }
 
     private void InitializeSteam()

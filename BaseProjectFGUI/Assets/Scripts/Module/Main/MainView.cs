@@ -1,6 +1,4 @@
 using FairyGUI;
-using UnityEngine;
-using Flame.CSV;
 
 public class MainView : BaseView
 {
@@ -34,9 +32,7 @@ public class MainView : BaseView
         {
             if (!isError)
             {
-                var t = CSVManager.GetInstance().GetTable<TestTable>();
-                var t1 = t[1];
-                Debug.Log("load complete!");
+                
             }
         });
     }

@@ -1,5 +1,4 @@
 ﻿using FairyGUI;
-using Flame.CSV;
 
 public class BagView : BaseView
 {
@@ -20,15 +19,10 @@ public class BagView : BaseView
 
     protected override void OnShown()
     {
-        //_tf.text = "繁城明月夜，踏路与风行。";
-        //TypingEffect tef = new(_tf);
-        //tef.Start();
-        //tef.PrintAll(0.1f);
-
-        var t = CSVManager.GetInstance().GetTable<LanguageTable>();
-        _tf.textI18nKey = t[1].key;
-        _tf.SetTextI18nVar("value", "在");
-        _tf.RefreshI18nText(t[1].zh);
+        _tf.text = "繁城明月夜，踏路与风行。";
+        TypingEffect tef = new(_tf);
+        tef.Start();
+        tef.PrintAll(0.1f);
     }
 
     private void OnClickBtn()
