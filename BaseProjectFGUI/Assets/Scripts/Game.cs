@@ -38,10 +38,6 @@ public class Game : MonoBehaviour
             CSteamID id = SteamUser.GetSteamID();
             Debug.Log("steam user id: " + id);
         }
-        else
-        {
-            Debug.LogError("Steam is not running");
-        }
     }
 
 }
