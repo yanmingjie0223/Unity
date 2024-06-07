@@ -7,7 +7,7 @@ dotnet %LUBAN_DLL% ^
     -c cs-bin ^
     -d bin  ^
     --conf %CONF_ROOT%\luban.conf ^
-    -x outputCodeDir=%WORKSPACE%Assets\Luban\Codes ^
-    -x outputDataDir=%WORKSPACE%Assets\Luban\Datas
+    -x outputCodeDir=%WORKSPACE%Assets\DynamicAssets\Luban\Codes ^
+    -x outputDataDir=%WORKSPACE%Assets\DynamicAssets\Luban\Datas
 
 pause

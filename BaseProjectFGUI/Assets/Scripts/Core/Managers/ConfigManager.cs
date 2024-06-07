@@ -22,7 +22,7 @@ public class ConfigManager : Singleton<ConfigManager>
 
     private ByteBuf LoadByteBuf(string file)
     {
-        return new ByteBuf(File.ReadAllBytes($"Assets/Luban/Datas/{file}.bytes"));
+        return new ByteBuf(File.ReadAllBytes($"Assets/DynamicAssets/Luban/Datas/{file}.bytes"));
     }
 }
 
