@@ -5,7 +5,7 @@ obj/
 *_Build/
 *.csproj
 *.sln
-# .objs/
+.objs/
 Library/*
-# UserSettings/Layouts/
+UserSettings/Layouts/
 !Library/LastSceneManagerSetup.txt
