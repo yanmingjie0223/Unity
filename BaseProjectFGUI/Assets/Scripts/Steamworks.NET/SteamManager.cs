@@ -121,7 +121,7 @@ public class SteamManager : MonoBehaviour {
 		// https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
 		m_bInitialized = SteamAPI.Init();
 		if (!m_bInitialized) {
-            Debug.LogError("Steam is not running or AppId_t error");
+            Debug.LogWarning("Steam is not running or AppId_t error");
             //Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);
 			return;
 		}
