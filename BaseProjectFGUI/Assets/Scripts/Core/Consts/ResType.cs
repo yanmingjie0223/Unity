@@ -3,4 +3,5 @@
     PNG,
     JPEG,
     PREFAB,
+    MP4
 }

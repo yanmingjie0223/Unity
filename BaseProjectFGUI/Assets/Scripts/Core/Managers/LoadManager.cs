@@ -1,28 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using Object = UnityEngine.Object;
 
-public class LoadManager : MonoBehaviour
+public class LoadManager : SingletonMono<LoadManager>
 {
-    private static LoadManager instance;
-
-    public static LoadManager GetInstance()
-    {
-        return instance;
-    }
-
-    public static void DeleteInstance()
-    {
-        if (instance != null)
-        {
-            instance = null;
-        }
-    }
 
     public void LoadBundle(BundleType bundleType, Action<string> start, Action<float> progress, Action<bool> end)
     {
@@ -34,11 +19,6 @@ public class LoadManager : MonoBehaviour
     public void LoadBundle(string bundleName, Action<string> start, Action<float> progress, Action<bool> end)
     {
         StartCoroutine(LoadRes(bundleName, start, progress, end));
-    }
-
-    protected void Awake()
-    {
-        instance = this;
     }
 
     private IEnumerator LoadRes(string bundleName, Action<string> start, Action<float> progress, Action<bool> end)
@@ -87,4 +67,5 @@ public class LoadManager : MonoBehaviour
         }
         Addressables.Release(handle);
     }
+
 }

@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class StageManager : Singleton<StageManager>
 {
-    private Rectangle _stageRect = new() { Width = 750, Height = 1334 };
-    private Rectangle _actionRect = new() { Width = 750, Height = 1334 };
-    private Rectangle _safeRect = new() { Width = 750, Height = 1334 };
+    private Rectangle _stageRect = new() { Width = GameConfig.initWidth, Height = GameConfig.initHeight };
+    private Rectangle _actionRect = new() { Width = GameConfig.initWidth, Height = GameConfig.initHeight };
+    private Rectangle _safeRect = new() { Width = GameConfig.initWidth, Height = GameConfig.initHeight };
 
     public void Initialize()
     {

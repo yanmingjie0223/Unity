@@ -6,8 +6,8 @@ public class Game : MonoBehaviour
 
     void Start()
     {
-        InitializeManager();
         InitializeModel();
+        InitializeManager();
         InitializeStart();
         InitializeSteam();
     }
@@ -22,7 +22,10 @@ public class Game : MonoBehaviour
     }
 
     private void InitializeModel()
-    { }
+    {
+        var modelManager = ModelManager.GetInstance();
+        modelManager.Register<SettingOptionModel>();
+    }
 
     private void InitializeStart()
     {

@@ -290,7 +290,7 @@ public class BaseView : BComponent
     {
         _pkgNames.ForEach(pkg =>
         {
-            UIPackage.AddPackage("UI/" + pkg);
+            UIPackage.AddPackage("ui/" + pkg);
         });
         contentPane = UIPackage.CreateObject(_pkgName, _resName).asCom;
         if (contentPane == null)

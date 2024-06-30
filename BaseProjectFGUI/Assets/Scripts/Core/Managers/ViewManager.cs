@@ -188,6 +188,20 @@ public class ViewManager : Singleton<ViewManager>
         }
     }
 
+    public void SetIsPause(bool isPause)
+    {
+        _isPause = isPause;
+        if (!_isPause)
+        {
+            NextShow();
+        }
+    }
+
+    public bool GetIsPause()
+    {
+        return _isPause;
+    }
+
     public BaseView GetView(Type V)
     {
         var key = V.Name;
@@ -196,6 +210,17 @@ public class ViewManager : Singleton<ViewManager>
             return null;
         }
         return _views[key];
+    }
+
+    public V GetView<V>() where V : BaseView
+    {
+        var VC = typeof(V);
+        var key = VC.Name;
+        if (_views == null || !_views.ContainsKey(key))
+        {
+            return null;
+        }
+        return (V)_views[key];
     }
 
     private void OnShow(string key, BaseView view, string layer)

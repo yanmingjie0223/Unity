@@ -4,6 +4,7 @@ public class FguiManager : Singleton<FguiManager>
 {
     public void Initialize()
     {
+        InitializeConfig();
         BindComponent();
     }
 

@@ -27,4 +27,9 @@
     {
         EventManager.GetInstance().Dispatch(type);
     }
+
+    public void Dispatch(GameEvent type, string message)
+    {
+        EventManager.GetInstance().Dispatch(type, message);
+    }
 }

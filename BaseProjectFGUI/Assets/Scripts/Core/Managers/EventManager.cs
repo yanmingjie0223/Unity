@@ -19,8 +19,6 @@ public class EventManager : Singleton<EventManager>
             if (item.IsSame((int)type, evevtCallback))
             {
                 item.Clear();
-                events.Remove(item);
-                eventsCache.Add(item);
                 break;
             }
         }
@@ -28,22 +26,50 @@ public class EventManager : Singleton<EventManager>
 
     public void Dispatch(GameEvent type)
     {
-        foreach (var item in events)
+        for (var i = 0; i < events.Count; ++i)
         {
-            if (item.Id() == (int)type)
+            var item = events[i];
+            if (item.IsSameId(type))
             {
                 item.Dispatch();
+            }
+        }
+
+        var count = events.Count;
+        for (var i = 0; i < events.Count; ++i)
+        {
+            var item = events[i];
+            if (item.IsEmpty())
+            {
+                events.Remove(item);
+                eventsCache.Add(item);
+                --i;
+                --count;
             }
         }
     }
 
     public void Dispatch(GameEvent type, string message)
     {
-        foreach (var item in events)
+        for (var i = 0; i < events.Count; ++i)
         {
-            if (item.Id() == (int)type)
+            var item = events[i];
+            if (item.IsSameId(type))
             {
                 item.Dispatch(message);
+            }
+        }
+
+        var count = events.Count;
+        for (var i = 0; i < events.Count; ++i)
+        {
+            var item = events[i];
+            if (item.IsEmpty())
+            {
+                events.Remove(item);
+                eventsCache.Add(item);
+                --i;
+                --count;
             }
         }
     }

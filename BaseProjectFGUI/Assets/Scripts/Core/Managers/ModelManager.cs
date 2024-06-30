@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ModelManager : Singleton<ModelManager>
@@ -14,14 +13,15 @@ public class ModelManager : Singleton<ModelManager>
         }
     }
 
-    public BaseModel Register<T>(string key) where T : BaseModel, new()
+    public T Register<T>() where T : BaseModel, new()
     {
-        if (modelDic[key] != null)
+        var key = typeof(T).Name;
+        if (modelDic.ContainsKey(key))
         {
-            return modelDic[key];
+            return (T)modelDic[key];
         }
 
-        if (key != "" && modelDic[key] == null)
+        if (key != "" && !modelDic.ContainsKey(key))
         {
             modelDic[key] = new T();
         }
@@ -40,12 +40,24 @@ public class ModelManager : Singleton<ModelManager>
         return null;
     }
 
-    public void Unregister<T>(string key) where T : BaseModel, new()
+    public void Unregister<T>() where T : BaseModel, new()
     {
+        var key = typeof(T).Name;
         if (modelDic[key] != null)
         {
             modelDic[key] = null;
         }
+    }
+
+    public T GetModel<T>() where T : BaseModel, new()
+    {
+        var key = typeof(T).Name;
+        if (!modelDic.ContainsKey(key))
+        {
+            Debug.LogError($"获取model数据源对象,未在ModelManager中注册 key: {key}");
+            return null;
+        }
+        return (T)modelDic[key];
     }
 
     public BaseModel GetModel(string key)
@@ -58,9 +70,10 @@ public class ModelManager : Singleton<ModelManager>
         return modelDic[key];
     }
 
-    public void Destroy(string key)
+    public void Destroy<T>() where T : BaseModel, new()
     {
-        var model = GetModel(key);
+        var key = typeof(T).Name;
+        var model = GetModel<T>();
         if (model != null)
         {
             modelDic[key] = null;
@@ -68,8 +81,9 @@ public class ModelManager : Singleton<ModelManager>
         }
     }
 
-    public bool IsExist(string key)
+    public bool IsExist<T>() where T : BaseModel, new()
     {
+        var key = typeof(T).Name;
         if (!modelDic.ContainsKey(key))
         {
             return false;

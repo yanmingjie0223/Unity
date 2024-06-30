@@ -2,12 +2,21 @@
 
 public class BEvent
 {
-    private int id;
+    private int id = -1;
     private event EvevtCallback Ecb;
 
     public int Id()
     {
         return id;
+    }
+
+    public bool IsEmpty()
+    {
+        if (Ecb == null)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void SetEvent(int _id, EvevtCallback _evevtCallback)
@@ -28,9 +37,18 @@ public class BEvent
         return false;
     }
 
+    public bool IsSameId(GameEvent _id)
+    {
+        if (id == (int)_id)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void Clear()
     {
-        id = 0;
+        id = -1;
         Ecb = null;
     }
 

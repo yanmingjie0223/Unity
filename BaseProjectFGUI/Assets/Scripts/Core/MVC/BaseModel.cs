@@ -1,10 +1,9 @@
 ﻿
 public abstract class BaseModel
 {
-    public static string key = "";
     public void Destroy() { }
     public void Clear() { }
-    public void Initialize() { }
+    virtual public void Initialize() { }
 
     public void AddEventListener(GameEvent type, EvevtCallback evevtCallback)
     {
@@ -19,5 +18,10 @@ public abstract class BaseModel
     public void Dispatch(GameEvent type)
     {
         EventManager.GetInstance().Dispatch(type);
+    }
+
+    public void Dispatch(GameEvent type, string message)
+    {
+        EventManager.GetInstance().Dispatch(type, message);
     }
 }

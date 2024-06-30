@@ -52,11 +52,12 @@ public class ResManager : Singleton<ResManager>
     /// <returns></returns>
     public string GetResUrl(string name, ResType type)
     {
-        string url = "Assets/Prefabs/" + name;
+        string url = "Assets/DynamicAssets/" + name;
         string exeUrl = type switch
         {
             ResType.PNG => ".png",
             ResType.PREFAB => ".prefab",
+            ResType.MP4 => ".mp4",
             _ => ""
         };
         return url + exeUrl;

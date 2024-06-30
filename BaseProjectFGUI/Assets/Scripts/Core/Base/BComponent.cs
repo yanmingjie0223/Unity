@@ -1,13 +1,7 @@
 ﻿using FairyGUI;
-using FairyGUI.Utils;
 
 public class BComponent : GComponent
 {
-
-    public override void ConstructFromXML(XML xml)
-    {
-        ConstructFromXML(xml);
-    }
 
     public void AddEventListener(GameEvent type, EvevtCallback evevtCallback)
     {
@@ -22,6 +16,11 @@ public class BComponent : GComponent
     public void Dispatch(GameEvent type)
     {
         EventManager.GetInstance().Dispatch(type);
+    }
+
+    public void Dispatch(GameEvent type, string message)
+    {
+        EventManager.GetInstance().Dispatch(type, message);
     }
 
 }
