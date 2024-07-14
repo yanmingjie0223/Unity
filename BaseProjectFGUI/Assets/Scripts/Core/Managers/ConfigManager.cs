@@ -1,7 +1,7 @@
 ﻿using cfg;
 using Luban;
 using System;
-using System.IO;
+using UnityEngine;
 
 public class ConfigManager : Singleton<ConfigManager>
 {
@@ -22,7 +22,8 @@ public class ConfigManager : Singleton<ConfigManager>
 
     private ByteBuf LoadByteBuf(string file)
     {
-        return new ByteBuf(File.ReadAllBytes($"Assets/DynamicAssets/Luban/Datas/{file}.bytes"));
+        var text = ResManager.GetInstance().GetAssetSync<TextAsset>(GameConfig.yooPackageName, GroupType.Config, file);
+        return new ByteBuf(text.bytes);
     }
 }
 

@@ -20,21 +20,7 @@ public class MainView : BaseView
 
     protected override void OnShown()
     {
-        var resManager = ResManager.GetInstance();
-        LoadManager.GetInstance().LoadBundle(BundleType.Config,
-        (string start) =>
-        {
-        },
-        (float progress) =>
-        {
-        },
-        (bool isError) =>
-        {
-            if (!isError)
-            {
-                
-            }
-        });
+        
     }
 
     private void OnClickBag()

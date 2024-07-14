@@ -5,14 +5,14 @@ public class EventManager : Singleton<EventManager>
     private readonly List<BEvent> events = new();
     private readonly List<BEvent> eventsCache = new();
 
-    public void AddEventListener(GameEvent type, EvevtCallback evevtCallback)
+    public void AddListener(GameEvent type, EvevtCallback evevtCallback)
     {
         var eve = GetEvent();
         eve.SetEvent((int)type, evevtCallback);
         events.Add(eve);
     }
 
-    public void OffEventListener(GameEvent type, EvevtCallback evevtCallback)
+    public void RemoveListener(GameEvent type, EvevtCallback evevtCallback)
     {
         foreach (var item in events)
         {

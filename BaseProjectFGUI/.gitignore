@@ -6,6 +6,7 @@ obj/
 *.csproj
 *.sln
 .objs/
+Bundles/
 Library/*
 UserSettings/Layouts/
 !Library/LastSceneManagerSetup.txt

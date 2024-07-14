@@ -268,7 +268,7 @@ public class BaseView : BComponent
         if (!_isInit || pkg == null)
         {
             var loadManager = LoadManager.GetInstance();
-            loadManager.LoadBundle(_pkgName, null, OnProgress, (bool isError) =>
+            loadManager.LoadGroup(GameConfig.yooPackageName, GroupType.UI, null, OnProgress, (bool isError) =>
             {
                 if (isError)
                 {
@@ -290,7 +290,7 @@ public class BaseView : BComponent
     {
         _pkgNames.ForEach(pkg =>
         {
-            UIPackage.AddPackage("ui/" + pkg);
+            UIPackage.AddPackage("ui/" + pkg, OnLoadFun);
         });
         contentPane = UIPackage.CreateObject(_pkgName, _resName).asCom;
         if (contentPane == null)
@@ -342,6 +342,13 @@ public class BaseView : BComponent
                 AddChildAt(_bbgLoader, 0);
             }
         }
+    }
+
+    private Object OnLoadFun(string name, string extension, System.Type type, out DestroyMethod destroyMethod)
+    {
+        destroyMethod = DestroyMethod.Unload;
+        var obj = ResManager.GetInstance().GetAssetSync(GameConfig.yooPackageName, GroupType.UI, name);
+        return obj;
     }
 
 }

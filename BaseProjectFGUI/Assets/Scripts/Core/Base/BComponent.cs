@@ -3,14 +3,14 @@
 public class BComponent : GComponent
 {
 
-    public void AddEventListener(GameEvent type, EvevtCallback evevtCallback)
+    public void AddListener(GameEvent type, EvevtCallback evevtCallback)
     {
-        EventManager.GetInstance().AddEventListener(type, evevtCallback);
+        EventManager.GetInstance().AddListener(type, evevtCallback);
     }
 
-    public void OffEventListener(GameEvent type, EvevtCallback evevtCallback)
+    public void RemoveListener(GameEvent type, EvevtCallback evevtCallback)
     {
-        EventManager.GetInstance().OffEventListener(type, evevtCallback);
+        EventManager.GetInstance().RemoveListener(type, evevtCallback);
     }
 
     public void Dispatch(GameEvent type)

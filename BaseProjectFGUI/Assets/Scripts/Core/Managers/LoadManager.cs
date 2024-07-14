@@ -1,71 +1,182 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
-using Object = UnityEngine.Object;
+using YooAsset;
 
 public class LoadManager : SingletonMono<LoadManager>
 {
 
-    public void LoadBundle(BundleType bundleType, Action<string> start, Action<float> progress, Action<bool> end)
+    public void Initialize()
     {
-        var resManager = ResManager.GetInstance();
-        string bundleName = resManager.GetBundleNmae(bundleType);
-        StartCoroutine(LoadRes(bundleName, start, progress, end));
+        YooAssets.Initialize();
+    }
+    public void Load(string pkgName, string resName, Action<string> start, Action<float> progress, Action<bool> end)
+    {
+        StartCoroutine(LoadRes(pkgName, resName, start, progress, end));
     }
 
-    public void LoadBundle(string bundleName, Action<string> start, Action<float> progress, Action<bool> end)
+    public void LoadGroup(string pkgName, GroupType groupType, Action<string> start, Action<float> progress, Action<bool> end)
     {
-        StartCoroutine(LoadRes(bundleName, start, progress, end));
+        string groupName = PathUtils.GetGroupName(groupType);
+        StartCoroutine(LoadGroupRes(pkgName, groupName, start, progress, end));
     }
 
-    private IEnumerator LoadRes(string bundleName, Action<string> start, Action<float> progress, Action<bool> end)
+    public void LoadGroup(string pkgName, string groupName, Action<string> start, Action<float> progress, Action<bool> end)
     {
-        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(bundleName);
+        StartCoroutine(LoadGroupRes(pkgName, groupName, start, progress, end));
+    }
+
+    public void LoadPackage(string pkgName, EPlayMode playMode, Action<string> start, Action<float> progress, Action<bool> end)
+    {
+        StartCoroutine(LoadPackageRes(pkgName, playMode, start, progress, end));
+    }
+
+    private IEnumerator LoadRes(string pkgName, string resName, Action<string> start, Action<float> progress, Action<bool> end)
+    {
         start?.Invoke("loading start");
-        while (handle.PercentComplete < 1 && !handle.IsDone)
-        {
-            progress?.Invoke(handle.PercentComplete);
-            yield return null;
-        }
-
-        yield return handle;
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            bool isError = false;
-            var length = handle.Result.Count;
-            for (int i = 0; i < length; i++)
-            {
-                var res = handle.Result[i];
-                var key = res.PrimaryKey;
-                start("load: " + key);
-                AsyncOperationHandle<Object> assetHandle = Addressables.LoadAssetAsync<Object>(key);
-                yield return assetHandle;
-                progress?.Invoke(((float)i + 1) / length);
-                if (assetHandle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    var resManager = ResManager.GetInstance();
-                    var resDic = resManager.GetBundleResDic(bundleName);
-                    if (!resDic.ContainsKey(key))
-                    {
-                        resDic.Add(key, assetHandle.Result);
-                    }
-                }
-                else
-                {
-                    isError = true;
-                    break;
-                }
-            }
-            end?.Invoke(isError);
-        }
-        else
+        var package = YooAssets.TryGetPackage(pkgName);
+        if (package == null)
         {
             end?.Invoke(true);
         }
-        Addressables.Release(handle);
+        else
+        {
+            var handler = package.LoadAssetAsync(resName);
+            progress?.Invoke(handler.Progress);
+            yield return handler;
+
+            if (handler.Status != EOperationStatus.Succeed)
+            {
+                end?.Invoke(true);
+            }
+            else
+            {
+                end?.Invoke(false);
+            }
+        }
+    }
+
+    private IEnumerator LoadGroupRes(string pkgName, string groupName, Action<string> start, Action<float> progress, Action<bool> end)
+    {
+        start?.Invoke("loading start");
+        var package = YooAssets.TryGetPackage(pkgName);
+        if (package == null)
+        {
+            end?.Invoke(true);
+        }
+        else
+        {
+            // 这里需要后面优化，多文件加载
+            AssetInfo[] assetInfos = package.GetAssetInfos(groupName);
+            int maxCount = assetInfos.Length;
+            int count = 0;
+            for (int i = 0; i < maxCount; i++)
+            {
+                var assetInfo = assetInfos[i];
+                var handler = package.LoadAssetAsync(assetInfo.Address);
+                yield return handler;
+                var status = handler.Status;
+                handler.Release();
+                if (status != EOperationStatus.Succeed)
+                {
+                    end?.Invoke(true);
+                    break;
+                }
+                else
+                {
+                    ++count;
+                    progress?.Invoke(count / maxCount);
+                    if (count >= maxCount)
+                    {
+                        end?.Invoke(false);
+                    }
+                }
+            }
+        }
+    }
+
+    private IEnumerator LoadPackageRes(string pkgName, EPlayMode playMode, Action<string> start, Action<float> progress, Action<bool> end)
+    {
+        start?.Invoke("loading start");
+        // 创建资源包裹类
+        var package = YooAssets.TryGetPackage(pkgName);
+        package ??= YooAssets.CreatePackage(pkgName);
+        // 编辑器下的模拟模式
+        InitializationOperation initializationOperation = null;
+        if (playMode == EPlayMode.EditorSimulateMode)
+        {
+            var simulateBuildResult = EditorSimulateModeHelper.SimulateBuild(EDefaultBuildPipeline.BuiltinBuildPipeline.ToString(), pkgName);
+            var createParameters = new EditorSimulateModeParameters
+            {
+                EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(simulateBuildResult)
+            };
+            initializationOperation = package.InitializeAsync(createParameters);
+        }
+        // 单机运行模式
+        if (playMode == EPlayMode.OfflinePlayMode)
+        {
+            var createParameters = new OfflinePlayModeParameters
+            {
+                BuildinFileSystemParameters = FileSystemParameters.CreateDefaultBuildinFileSystemParameters()
+            };
+            initializationOperation = package.InitializeAsync(createParameters);
+        }
+        // 联机运行模式
+        if (playMode == EPlayMode.HostPlayMode)
+        {
+            string serverUrl = PathUtils.GetHostServerURL();
+            IRemoteServices remoteServices = new RemoteServices(serverUrl, serverUrl);
+            var createParameters = new HostPlayModeParameters
+            {
+                BuildinFileSystemParameters = FileSystemParameters.CreateDefaultBuildinFileSystemParameters(),
+                CacheFileSystemParameters = FileSystemParameters.CreateDefaultCacheFileSystemParameters(remoteServices)
+            };
+            initializationOperation = package.InitializeAsync(createParameters);
+        }
+        // WebGL运行模式
+        if (playMode == EPlayMode.WebPlayMode)
+        {
+            var createParameters = new WebPlayModeParameters
+            {
+                WebFileSystemParameters = FileSystemParameters.CreateDefaultWebFileSystemParameters()
+            };
+            initializationOperation = package.InitializeAsync(createParameters);
+        }
+        // 等待加载结果
+        progress?.Invoke(initializationOperation.Progress);
+        yield return initializationOperation;
+        // 如果初始化失败弹出提示界面
+        if (initializationOperation.Status != EOperationStatus.Succeed)
+        {
+            end?.Invoke(true);
+        }
+        else
+        {
+            // 版本
+            var operation = package.RequestPackageVersionAsync();
+            progress?.Invoke(operation.Progress);
+            yield return operation;
+
+            if (operation.Status != EOperationStatus.Succeed)
+            {
+                end?.Invoke(true);
+            }
+            else
+            {
+                // 资源列表文件
+                var updateOpe = package.UpdatePackageManifestAsync(operation.PackageVersion);
+                progress?.Invoke(updateOpe.Progress);
+                yield return updateOpe;
+
+                if (operation.Status != EOperationStatus.Succeed)
+                {
+                    end?.Invoke(true);
+                }
+                else
+                {
+                    end?.Invoke(false);
+                }
+            }
+        }
     }
 
 }
