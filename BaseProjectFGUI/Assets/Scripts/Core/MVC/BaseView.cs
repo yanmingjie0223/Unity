@@ -267,8 +267,7 @@ public class BaseView : BComponent
         var pkg = UIPackage.GetByName(_pkgName);
         if (!_isInit || pkg == null)
         {
-            var loadManager = LoadManager.GetInstance();
-            loadManager.LoadGroup(GameConfig.yooPackageName, GroupType.UI, null, OnProgress, (bool isError) =>
+            LoadManager.GetInstance().LoadGroup(GameConfig.yooPackageName, GroupType.UI, null, OnProgress, (bool isError) =>
             {
                 if (isError)
                 {
@@ -288,6 +287,11 @@ public class BaseView : BComponent
 
     private void OnInitUI()
     {
+        if (_isDestroy)
+        {
+            return;
+        }
+
         _pkgNames.ForEach(pkg =>
         {
             UIPackage.AddPackage("ui/" + pkg, OnLoadFun);
