@@ -13,19 +13,17 @@ MonoBehaviour:
   m_Name: AssetBundleCollectorSetting
   m_EditorClassIdentifier: 
   ShowPackageView: 1
+  EnableAddressable: 1
+  LocationToLower: 0
+  IncludeAssetGUID: 0
+  UniqueBundleName: 0
   ShowEditorAlias: 0
-  UniqueBundleName: 1
   Packages:
   - PackageName: DynamicAssets
     PackageDesc: 
-    EnableAddressable: 1
-    LocationToLower: 0
-    IncludeAssetGUID: 0
-    AutoCollectShaders: 1
-    IgnoreRuleName: NormalIgnoreRule
     Groups:
     - GroupName: Config
-      GroupDesc: "\u8868\u6570\u636E"
+      GroupDesc: 
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
@@ -38,7 +36,7 @@ MonoBehaviour:
         AssetTags: Config
         UserData: 
     - GroupName: UI
-      GroupDesc: "\u754C\u9762"
+      GroupDesc: 
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
@@ -51,7 +49,7 @@ MonoBehaviour:
         AssetTags: UI
         UserData: 
     - GroupName: Video
-      GroupDesc: "\u89C6\u9891"
+      GroupDesc: 
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:

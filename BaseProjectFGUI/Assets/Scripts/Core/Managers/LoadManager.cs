@@ -1,9 +1,24 @@
 using System;
 using System.Collections;
+using UnityEngine;
 using YooAsset;
 
-public class LoadManager : SingletonMono<LoadManager>
+public class LoadManager : MonoBehaviour
 {
+    private static LoadManager _instance;
+    public static LoadManager GetInstance()
+    {
+        {
+            if (_instance == null)
+            {
+                return new GameObject("Load Manager").AddComponent<LoadManager>();
+            }
+            else
+            {
+                return _instance;
+            }
+        }
+    }
 
     public void Initialize()
     {
@@ -104,42 +119,38 @@ public class LoadManager : SingletonMono<LoadManager>
         InitializationOperation initializationOperation = null;
         if (playMode == EPlayMode.EditorSimulateMode)
         {
-            var simulateBuildResult = EditorSimulateModeHelper.SimulateBuild(EDefaultBuildPipeline.BuiltinBuildPipeline.ToString(), pkgName);
-            var createParameters = new EditorSimulateModeParameters
-            {
-                EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(simulateBuildResult)
-            };
-            initializationOperation = package.InitializeAsync(createParameters);
+            var initParameters = new EditorSimulateModeParameters();
+            initParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(pkgName);
+            initializationOperation = package.InitializeAsync(initParameters);
         }
         // 单机运行模式
         if (playMode == EPlayMode.OfflinePlayMode)
         {
-            var createParameters = new OfflinePlayModeParameters
-            {
-                BuildinFileSystemParameters = FileSystemParameters.CreateDefaultBuildinFileSystemParameters()
-            };
-            initializationOperation = package.InitializeAsync(createParameters);
+            var initParameters = new OfflinePlayModeParameters();
+            initializationOperation = package.InitializeAsync(initParameters);
         }
         // 联机运行模式
         if (playMode == EPlayMode.HostPlayMode)
         {
             string serverUrl = PathUtils.GetHostServerURL();
-            IRemoteServices remoteServices = new RemoteServices(serverUrl, serverUrl);
-            var createParameters = new HostPlayModeParameters
+            var initParameters = new HostPlayModeParameters
             {
-                BuildinFileSystemParameters = FileSystemParameters.CreateDefaultBuildinFileSystemParameters(),
-                CacheFileSystemParameters = FileSystemParameters.CreateDefaultCacheFileSystemParameters(remoteServices)
+                RemoteServices = new RemoteServices(serverUrl, serverUrl)
             };
-            initializationOperation = package.InitializeAsync(createParameters);
+            initializationOperation = package.InitializeAsync(initParameters);
         }
         // WebGL运行模式
         if (playMode == EPlayMode.WebPlayMode)
         {
-            var createParameters = new WebPlayModeParameters
+            YooAssets.SetCacheSystemDisableCacheOnWebGL();
+
+            string serverUrl = PathUtils.GetHostServerURL();
+            var initParameters = new WebPlayModeParameters
             {
-                WebFileSystemParameters = FileSystemParameters.CreateDefaultWebFileSystemParameters()
+                BuildinQueryServices = new BuildQueryServices(),
+                RemoteServices = new RemoteServices(serverUrl, serverUrl)
             };
-            initializationOperation = package.InitializeAsync(createParameters);
+            initializationOperation = package.InitializeAsync(initParameters);
         }
         // 等待加载结果
         progress?.Invoke(initializationOperation.Progress);
@@ -152,7 +163,7 @@ public class LoadManager : SingletonMono<LoadManager>
         else
         {
             // 版本
-            var operation = package.RequestPackageVersionAsync();
+            var operation = package.UpdatePackageVersionAsync();
             progress?.Invoke(operation.Progress);
             yield return operation;
 
@@ -177,6 +188,17 @@ public class LoadManager : SingletonMono<LoadManager>
                 }
             }
         }
+    }
+
+    protected virtual void Awake()
+    {
+        if (_instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
 }

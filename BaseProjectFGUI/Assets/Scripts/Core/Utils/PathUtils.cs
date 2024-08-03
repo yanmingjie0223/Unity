@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static UnityEditor.MaterialProperty;
 
 public class PathUtils
 {

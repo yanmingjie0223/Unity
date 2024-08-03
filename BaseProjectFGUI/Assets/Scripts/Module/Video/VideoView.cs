@@ -62,7 +62,7 @@ public class VideoView : BaseView
             return;
         }
 
-        var videoClip = Resources.Load<VideoClip>("Videos/fyz");
+        var videoClip = ResManager.GetInstance().GetAssetSync(GameConfig.yooPackageName, GroupType.Video, "fyz") as VideoClip;
         if (videoClip == null)
         {
             return;
