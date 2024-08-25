@@ -17,5 +17,13 @@
         WINDOW_COMPONENT = new FairyGUI.GComponent();
         GUIDE_COMPONENT = new FairyGUI.GComponent();
         MAX_COMPONENT = new FairyGUI.GComponent();
+
+        BACKSTAGE_COMPONENT.displayObject.cachedTransform.name = ViewLayerType.BACKSTAGE_LAYER;
+        BOTTOM_COMPONENT.displayObject.cachedTransform.name = ViewLayerType.BOTTOM_LAYER;
+        MIDDLE_COMPONENT.displayObject.cachedTransform.name = ViewLayerType.MIDDLE_LAYER;
+        TOP_COMPONENT.displayObject.cachedTransform.name = ViewLayerType.TOP_LAYER;
+        WINDOW_COMPONENT.displayObject.cachedTransform.name = ViewLayerType.WINDOW_LAYER;
+        GUIDE_COMPONENT.displayObject.cachedTransform.name = ViewLayerType.GUIDE_LAYER;
+        MAX_COMPONENT.displayObject.cachedTransform.name = ViewLayerType.MAX_LAYER;
     }
 }

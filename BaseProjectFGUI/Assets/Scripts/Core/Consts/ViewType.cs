@@ -45,29 +45,29 @@ public class ViewLayerType
     /// <summary>
     /// 后台层
     /// </summary>
-    public static string BACKSTAGE_LAYER = "backstage_layer";
+    public static string BACKSTAGE_LAYER = "Backstage_Layer";
     /// <summary>
     /// view底层类型
     /// </summary>
-    public static string BOTTOM_LAYER = "bottom_layer";
+    public static string BOTTOM_LAYER = "Bottom_Layer";
     /// <summary>
     /// view中层类型
     /// </summary>
-    public static string MIDDLE_LAYER = "middle_layer";
+    public static string MIDDLE_LAYER = "Middle_Layer";
     /// <summary>
     /// view上层类型
     /// </summary>
-    public static string TOP_LAYER = "top_layer";
+    public static string TOP_LAYER = "Top_Layer";
     /// <summary>
     /// 弹窗层类型
     /// </summary>
-    public static string WINDOW_LAYER = "window_layer";
+    public static string WINDOW_LAYER = "Window_Layer";
     /// <summary>
     /// 引导层类型
     /// </summary>
-    public static string GUIDE_LAYER = "guide_layer";
+    public static string GUIDE_LAYER = "Guide_Layer";
     /// <summary>
     /// 最外层类型
     /// </summary>
-    public static string MAX_LAYER = "max_layer";
+    public static string MAX_LAYER = "Max_Layer";
 }

@@ -304,6 +304,8 @@ public class BaseView : BComponent
             return;
         }
 
+        displayObject.cachedTransform.name = $"{contentPane.displayObject.cachedTransform.name}_Container";
+
         OnPaneRelation();
         OnCompleteUI();
         _isInit = true;

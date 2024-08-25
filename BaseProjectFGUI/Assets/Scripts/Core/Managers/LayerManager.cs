@@ -1,5 +1,4 @@
-﻿
-public class LayerManager : Singleton<LayerManager>
+﻿public class LayerManager : Singleton<LayerManager>
 {
     public void Initialize()
     {
@@ -13,14 +12,6 @@ public class LayerManager : Singleton<LayerManager>
         rootCom.AddChild(ViewLayer.WINDOW_COMPONENT);
         rootCom.AddChild(ViewLayer.GUIDE_COMPONENT);
         rootCom.AddChild(ViewLayer.MAX_COMPONENT);
-
-        ViewLayer.BACKSTAGE_COMPONENT.name = ViewLayerType.BACKSTAGE_LAYER;
-        ViewLayer.BOTTOM_COMPONENT.name = ViewLayerType.BOTTOM_LAYER;
-        ViewLayer.MIDDLE_COMPONENT.name = ViewLayerType.MIDDLE_LAYER;
-        ViewLayer.TOP_COMPONENT.name = ViewLayerType.TOP_LAYER;
-        ViewLayer.WINDOW_COMPONENT.name = ViewLayerType.WINDOW_LAYER;
-        ViewLayer.GUIDE_COMPONENT.name = ViewLayerType.GUIDE_LAYER;
-        ViewLayer.MAX_COMPONENT.name = ViewLayerType.MAX_LAYER;
     }
 
     public FairyGUI.GComponent GetLayer(string layer)
