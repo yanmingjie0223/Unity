@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="750,1334">
+  <controller name="cFish" pages="0,,1," selected="0">
+    <remark page="0" value="出鱼状态"/>
+    <remark page="1" value="入鱼状态"/>
+  </controller>
+  <displayList>
+    <image id="n10_sila" name="n10" src="sila1" fileName="image/bg.png" xy="0,0" size="750,1334">
+      <relation target="" sidePair="width-width,height-height"/>
+    </image>
+  </displayList>
+</component>

@@ -1,0 +1,16 @@
+{
+    "name": "cfg",
+    "rootNamespace": "",
+    "references": [
+        "GUID:eadf166bea1d3b2418306f922549cc7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

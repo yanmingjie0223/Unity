@@ -5,3 +5,6 @@
 - BaseProjectFGUI
   - fairygui + yoo + luban
   - steam
+- BaseMiniProjectFGUI
+  - fairygui + yoo + luban
+  - minigame

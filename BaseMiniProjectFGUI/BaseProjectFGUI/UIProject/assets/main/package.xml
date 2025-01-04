@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="339no4o4">
+  <resources>
+    <component id="bg9v0" name="MainView.xml" path="/" exported="true"/>
+    <image id="sila1" name="bg.png" path="/image/" exported="true" scale="9grid" scale9grid="18,18,36,36"/>
+  </resources>
+  <publish name="main"/>
+</packageDescription>

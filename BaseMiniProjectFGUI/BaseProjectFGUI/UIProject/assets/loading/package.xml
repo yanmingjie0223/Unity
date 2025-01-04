@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="n9l8381o">
+  <resources>
+    <component id="knup1" name="LoadingView.xml" path="/" exported="true"/>
+    <component id="anm3h" name="LoadingPB.xml" path="/"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>
