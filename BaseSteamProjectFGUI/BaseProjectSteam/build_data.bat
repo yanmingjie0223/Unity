@@ -1,6 +1,6 @@
 set WORKSPACE=.\
 set LUBAN_DLL=%WORKSPACE%Tools\Luban\Luban.dll
-set CONF_ROOT=%WORKSPACE%Design\Datas
+set CONF_ROOT=%WORKSPACE%..\Design\Datas
 
 dotnet %LUBAN_DLL% ^
     -t client ^
