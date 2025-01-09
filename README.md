@@ -2,9 +2,9 @@
 
 基于 unity 的工程
 
-- BaseProjectFGUI
+- BaseSteamProjectFGUI steam游戏基础工程
   - fairygui + yoo + luban
   - steam
-- BaseMiniProjectFGUI
+- BaseMiniProjectFGUI 小游戏基础工程
   - fairygui + yoo + luban
   - minigame
