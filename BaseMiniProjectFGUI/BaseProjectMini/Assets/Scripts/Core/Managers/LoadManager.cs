@@ -100,7 +100,7 @@ public class LoadManager : MonoBehaviour
                 else
                 {
                     ++count;
-                    progress?.Invoke(count / maxCount);
+                    progress?.Invoke((float)count / maxCount);
                     if (count >= maxCount)
                     {
                         end?.Invoke(false);
