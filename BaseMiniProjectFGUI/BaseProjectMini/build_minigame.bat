@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 set curPath=%~dp0
-set serverPath="%curPath%..\..\..\ResServer\BaseProjectFGUI\"
+set serverPath="%curPath%Release\BaseProjectMini\"
 set webglPath="%curPath%Release\webgl\"
 set resPath="%curPath%Bundles\WebGL\DynamicAssets\v1.0\"
 
