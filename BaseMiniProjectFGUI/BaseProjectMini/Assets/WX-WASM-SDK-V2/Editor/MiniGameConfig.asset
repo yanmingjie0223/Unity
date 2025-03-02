@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: MiniGameConfig
   m_EditorClassIdentifier: 
   ProjectConf:
-    projectName: FondleFish
+    projectName: BaseProjectMini
     Appid: wx9a2723fbc703037e
-    CDN: https://fondlefish-1259097372.cos-website.ap-nanjing.myqcloud.com/FondleFish/
+    CDN: https://baseprojectmini-1259097372.cos-website.ap-nanjing.myqcloud.com/BaseProjectMini/
     assetLoadType: 0
     compressDataPackage: 1
     VideoUrl: 
-    DST: D:\Files\Svn\FondleFish\FondleFish\Release
+    DST: D:\Files\Git\Unity\BaseMiniProjectFGUI\BaseProjectMini\Release
     StreamCDN: 
     bundleHashLength: 32
     bundlePathIdentifier: StreamingAssets;
@@ -41,7 +41,7 @@ MonoBehaviour:
     disableHighPerformanceFallback: 0
     IOSDevicePixelRatio: 0
   SDKOptions:
-    UseFriendRelation: 0
+    UseFriendRelation: 1
     UseCompressedTexture: 0
     UseMiniGameChat: 0
     PreloadWXFont: 0
@@ -65,6 +65,7 @@ MonoBehaviour:
     iOSAutoGCInterval: 10000
     enableIOSPerformancePlus: 1
     brotliMT: 0
+    enableWasm2023: 0
   CompressTexture:
     halfSize: 0
     useDXT5: 0

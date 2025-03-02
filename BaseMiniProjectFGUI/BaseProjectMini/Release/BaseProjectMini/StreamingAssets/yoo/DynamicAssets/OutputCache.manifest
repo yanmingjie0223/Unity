@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 1586451749
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: assets_dynamicassets_luban_datas.bundle
+      Dependencies: {}
+    Info_1:
+      Name: assets_dynamicassets_ui.bundle
+      Dependencies: {}

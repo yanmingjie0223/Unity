@@ -1,0 +1,196 @@
+{
+    "Summary": {
+        "YooVersion": "",
+        "UnityVersion": "2022.3.30f1c1",
+        "BuildDate": "2025/3/2 23:45:16",
+        "BuildSeconds": 1,
+        "BuildTarget": 20,
+        "BuildPipeline": 0,
+        "BuildMode": 0,
+        "BuildPackageName": "DynamicAssets",
+        "BuildPackageVersion": "v1.0",
+        "EnableAddressable": true,
+        "LocationToLower": false,
+        "IncludeAssetGUID": false,
+        "UniqueBundleName": false,
+        "SharedPackRuleClassName": "YooAsset.Editor.ZeroRedundancySharedPackRule",
+        "EncryptionServicesClassName": "YooAsset.Editor.EncryptionNone",
+        "OutputNameStyle": 1,
+        "CompressOption": 2,
+        "DisableWriteTypeTree": false,
+        "IgnoreTypeTreeChanges": true,
+        "AssetFileTotalCount": 10,
+        "MainAssetTotalCount": 10,
+        "AllBundleTotalCount": 2,
+        "AllBundleTotalSize": 25368,
+        "EncryptedBundleTotalCount": 0,
+        "EncryptedBundleTotalSize": 0,
+        "RawBundleTotalCount": 0,
+        "RawBundleTotalSize": 0
+    },
+    "AssetInfos": [
+        {
+            "Address": "Config_ncb_tbglobal",
+            "AssetPath": "Assets/DynamicAssets/Luban/Datas/ncb_tbglobal.bytes",
+            "AssetGUID": "951ba32760417bd4081825e47bc75c0d",
+            "AssetTags": [
+                "Config"
+            ],
+            "MainBundleName": "assets_dynamicassets_luban_datas.bundle",
+            "MainBundleSize": 1281,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "Config_ncb_tbitem",
+            "AssetPath": "Assets/DynamicAssets/Luban/Datas/ncb_tbitem.bytes",
+            "AssetGUID": "5280b7fa4476de04ea351efacea04d2b",
+            "AssetTags": [
+                "Config"
+            ],
+            "MainBundleName": "assets_dynamicassets_luban_datas.bundle",
+            "MainBundleSize": 1281,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_common_atlas0",
+            "AssetPath": "Assets/DynamicAssets/UI/common_atlas0.png",
+            "AssetGUID": "29af1d453f5e3704d93fde2a54f7344a",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_common_fui",
+            "AssetPath": "Assets/DynamicAssets/UI/common_fui.bytes",
+            "AssetGUID": "6b64aa3b86c8c6c49a3141f3817da7f9",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_loading_fui",
+            "AssetPath": "Assets/DynamicAssets/UI/loading_fui.bytes",
+            "AssetGUID": "632845e19283b794484dace9c078f3c0",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_main_atlas0",
+            "AssetPath": "Assets/DynamicAssets/UI/main_atlas0.png",
+            "AssetGUID": "2486f6ca7bce40f418250987ebee0909",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_main_fui",
+            "AssetPath": "Assets/DynamicAssets/UI/main_fui.bytes",
+            "AssetGUID": "b94db6e6aefca484188710321f4f67af",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_preload_atlas0",
+            "AssetPath": "Assets/DynamicAssets/UI/preload_atlas0.png",
+            "AssetGUID": "8fe485f927ee06045958469dda453332",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_preload_fui",
+            "AssetPath": "Assets/DynamicAssets/UI/preload_fui.bytes",
+            "AssetGUID": "0265bf105131adf469427d18c9dfdadf",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        },
+        {
+            "Address": "UI_wBg",
+            "AssetPath": "Assets/DynamicAssets/UI/wBg.png",
+            "AssetGUID": "ba9203c50f2d29f44b1701e69bd002fe",
+            "AssetTags": [
+                "UI"
+            ],
+            "MainBundleName": "assets_dynamicassets_ui.bundle",
+            "MainBundleSize": 24087,
+            "DependBundles": [],
+            "DependAssets": []
+        }
+    ],
+    "BundleInfos": [
+        {
+            "BundleName": "assets_dynamicassets_luban_datas.bundle",
+            "FileName": "3ba9cebf8e9904d18080af73732a6560.bundle",
+            "FileHash": "3ba9cebf8e9904d18080af73732a6560",
+            "FileCRC": "3249b2f2",
+            "FileSize": 1281,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [
+                "Config"
+            ],
+            "ReferenceIDs": [],
+            "AllBuiltinAssets": [
+                "Assets/DynamicAssets/Luban/Datas/ncb_tbglobal.bytes",
+                "Assets/DynamicAssets/Luban/Datas/ncb_tbitem.bytes"
+            ]
+        },
+        {
+            "BundleName": "assets_dynamicassets_ui.bundle",
+            "FileName": "a4fae12cac1458ffd743a0e9048342aa.bundle",
+            "FileHash": "a4fae12cac1458ffd743a0e9048342aa",
+            "FileCRC": "c4d8b4ec",
+            "FileSize": 24087,
+            "IsRawFile": false,
+            "LoadMethod": 0,
+            "Tags": [
+                "UI"
+            ],
+            "ReferenceIDs": [],
+            "AllBuiltinAssets": [
+                "Assets/DynamicAssets/UI/common_atlas0.png",
+                "Assets/DynamicAssets/UI/common_fui.bytes",
+                "Assets/DynamicAssets/UI/loading_fui.bytes",
+                "Assets/DynamicAssets/UI/main_atlas0.png",
+                "Assets/DynamicAssets/UI/main_fui.bytes",
+                "Assets/DynamicAssets/UI/preload_atlas0.png",
+                "Assets/DynamicAssets/UI/preload_fui.bytes",
+                "Assets/DynamicAssets/UI/wBg.png"
+            ]
+        }
+    ],
+    "RedundancyInfos": []
+}
