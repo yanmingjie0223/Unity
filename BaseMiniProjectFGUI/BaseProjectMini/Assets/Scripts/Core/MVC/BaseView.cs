@@ -267,17 +267,23 @@ public class BaseView : BComponent
         var pkg = UIPackage.GetByName(_pkgName);
         if (!_isInit || pkg == null)
         {
-            LoadManager.GetInstance().LoadGroup(GameConfig.yooPackageName, GroupType.UI, null, OnProgress, (bool isError) =>
-            {
-                if (isError)
+            ResManager.GetInstance().GetResAssetAsync(
+                GameConfig.yooPackageName,
+                _pkgNames,
+                null,
+                OnProgress,
+                (bool isError) =>
                 {
-                    Destroy();
+                    if (isError)
+                    {
+                        Destroy();
+                    }
+                    else
+                    {
+                        OnInitUI();
+                    }
                 }
-                else
-                {
-                    OnInitUI();
-                }
-            });
+            );
         }
         else
         {

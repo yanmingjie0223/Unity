@@ -72,13 +72,12 @@ public class Game : MonoBehaviour
 
     private void InitializeStart()
     {
-        ResManager.GetInstance().GetFpkgAssetAsync(
+        ResManager.GetInstance().GetResAssetAsync(
             GameConfig.yooPackageName,
-            GroupType.UI,
-            "main",
+            new() { "main" },
             (string hint) => { },
             (float progress) => { },
-            (bool isError, Object obj) =>
+            (bool isError) =>
             {
                 var viewManager = ViewManager.GetInstance();
                 viewManager.Close(typeof(LoadingView));

@@ -6,11 +6,11 @@ public class AudioManager : SingletonMono<AudioManager>
     private readonly Dictionary<string, List<AudioSource>> _audioDic = new();
     private readonly List<AudioSource> _audioPool = new();
 
-    public void OnPlayOneShot(string soundName)
+    public void OnPlay(string soundName, bool isLoop = false, bool isFadeIn = false, bool isFadeOut = false)
     {
         CheckRecycle();
         var audioClip = GetAudioClip(soundName);
-        var audioSource = CreateAudioSource(soundName);
+        var audioSource = CreateAudioSource();
         audioSource.clip = audioClip;
 
         List<AudioSource> sources;
@@ -25,10 +25,13 @@ public class AudioManager : SingletonMono<AudioManager>
         }
         sources.Add(audioSource);
 
-        audioSource.PlayOneShot(audioClip);
+        audioSource.gameObject.GetComponent<AudioFader>().SetFade(isFadeIn, isFadeOut);
+
+        audioSource.loop = isLoop;
+        audioSource.Play();
     }
 
-    public void OnResumeop(string soundName)
+    public void OnResumeStop(string soundName)
     {
         if (_audioDic.ContainsKey(soundName))
         {
@@ -65,15 +68,17 @@ public class AudioManager : SingletonMono<AudioManager>
             for (var i = sources.Count - 1; i > -1; --i)
             {
                 var source = sources[i];
+                var fader = source.gameObject.GetComponent<AudioFader>();
                 if (source.clip)
                 {
-                    if (source.time >= source.clip.length || !source.isPlaying)
+                    if (source.time >= source.clip.length || !source.isPlaying || !source.loop)
                     {
                         _audioPool.Add(source);
                         sources.RemoveAt(i);
                         source.Stop();
                         source.time = 0;
                         source.clip = null;
+                        fader.SetFade(false, false);
                     }
                 }
                 else
@@ -83,6 +88,8 @@ public class AudioManager : SingletonMono<AudioManager>
                     source.Stop();
                     source.time = 0;
                     source.clip = null;
+                    source.loop = false;
+                    fader.SetFade(false, false);
                 }
             }
         }
@@ -99,7 +106,7 @@ public class AudioManager : SingletonMono<AudioManager>
         return clip;
     }
 
-    private AudioSource CreateAudioSource(string soundName)
+    private AudioSource CreateAudioSource()
     {
         AudioSource audioSource;
         if (_audioPool.Count > 0)
@@ -110,6 +117,7 @@ public class AudioManager : SingletonMono<AudioManager>
         else
         {
             audioSource = (new GameObject()).AddComponent<AudioSource>();
+            audioSource.gameObject.AddComponent<AudioFader>();
             audioSource.gameObject.transform.parent = transform;
         }
 

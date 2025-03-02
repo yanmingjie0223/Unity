@@ -14,16 +14,19 @@ namespace cfg
 public partial class Tables
 {
     public ncb.TbItem TbItem {get; }
+    public ncb.TbGlobal TbGlobal {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
         TbItem = new ncb.TbItem(loader("ncb_tbitem"));
+        TbGlobal = new ncb.TbGlobal(loader("ncb_tbglobal"));
         ResolveRef();
     }
     
     private void ResolveRef()
     {
         TbItem.ResolveRef(this);
+        TbGlobal.ResolveRef(this);
     }
 }
 
