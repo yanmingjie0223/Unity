@@ -43,7 +43,7 @@ public class PathUtils
                 hostServerIP = "http://192.168.1.8:8080/ResServer/BaseProjectFGUI";
                 break;
             case ServerType.Web:
-                hostServerIP = "https://baseprojectmini-1259097372.cos-website.ap-nanjing.myqcloud.com/BaseProjectMini";
+                hostServerIP = "https://baseprojectmini-1259097372.cos-website.ap-nanjing.myqcloud.com/BaseProjectMini/";
                 break;
         }
         return hostServerIP;
