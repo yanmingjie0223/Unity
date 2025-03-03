@@ -11,7 +11,9 @@ using LitJson;
 using UnityEditor.Build;
 using System.Linq;
 using System.Net;
+using Debug = UnityEngine.Debug;
 using static WeChatWASM.LifeCycleEvent;
+using System.Diagnostics;
 
 namespace WeChatWASM
 {
@@ -1008,6 +1010,7 @@ namespace WeChatWASM
                 convertDataPackage(false);
                 UnityEngine.Debug.LogFormat("[Converter] All done!");
                 //ShowNotification(new GUIContent("转换完成"));
+                finishBat();
                 Emit(LifeCycle.exportDone);
             }
             else
@@ -1015,6 +1018,53 @@ namespace WeChatWASM
                 convertDataPackage(true);
             }
         }
+        private static void finishBat()
+        {
+            // 获取相对路径
+            string relativePath = "../build_minigame.bat"; // 相对于Assets文件夹的路径
+            string batFilePath = System.IO.Path.Combine(Application.dataPath, relativePath);
+
+            // 检查文件是否存在
+            if (!System.IO.File.Exists(batFilePath))
+            {
+                Debug.LogError("Batch file not found at: " + batFilePath);
+                return;
+            }
+
+            // 创建进程启动信息
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(batFilePath)
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            // 启动进程
+            using (Process process = new Process())
+            {
+                process.StartInfo = processStartInfo;
+                process.Start();
+
+                // 读取输出
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                // 等待进程结束
+                process.WaitForExit();
+
+                // 输出结果
+                if (!string.IsNullOrEmpty(output))
+                {
+                    Debug.Log("Output: " + output);
+                }
+                //if (!string.IsNullOrEmpty(error))
+                //{
+                //    Debug.LogError("Error: " + error);
+                //}
+            }
+        }
+
         /// <summary>
         /// 等brotli之后，统计下资源包加brotli压缩后代码包是否超过了30M（小游戏代码分包总大小限制）
         /// </summary>
