@@ -1,6 +1,4 @@
 using FairyGUI;
-using UnityEngine.UI;
-using WeChatWASM;
 using UnityEngine;
 
 public class MainView : BaseView
@@ -35,28 +33,22 @@ public class MainView : BaseView
     private void OnClickBtn(EventContext ec)
     {
         var sender = ec.sender as GButton;
+        var wxOpenContext = WxOpenContext.GetInstance();
         if (sender == _btnStart)
         {
-            var openCanvas = GameObject.Find("Open Canvas");
-            var openCanvaseScaler = openCanvas.GetComponent<CanvasScaler>();
-            var RankBody = openCanvas.transform.Find("RankBody").GetComponent<RawImage>();
-            var referenceResolution = openCanvaseScaler.referenceResolution;
-            var p = RankBody.transform.position;
-            WX.ShowOpenData(RankBody.texture, (int)p.x, Screen.height - (int)p.y, (int)((Screen.width / referenceResolution.x) * RankBody.rectTransform.rect.width), (int)((Screen.width / referenceResolution.x) * RankBody.rectTransform.rect.height));
+            wxOpenContext.ShowOpenData();
         }
         else if (sender == _btnClose)
         {
-            WX.HideOpenData();
+            wxOpenContext.HideOpenData();
         }
         else if (sender == _btnFriend)
         {
-            var openDataContext = new WXOpenDataContext();
-            openDataContext.PostMessage("{\"type\":\"showFriendsRank\"}");
+            wxOpenContext.SendFriendMessage();
         }
         else if (sender == _btnWorld)
         {
-            var openDataContext = new WXOpenDataContext();
-            openDataContext.PostMessage("{\"type\":\"showGroupFriendsRank\"}");
+            wxOpenContext.SendGroupFriendMessage();
         }
     }
 

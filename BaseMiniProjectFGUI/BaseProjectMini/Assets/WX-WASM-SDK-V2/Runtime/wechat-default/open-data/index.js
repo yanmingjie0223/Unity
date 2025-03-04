@@ -9,8 +9,6 @@ const Layout = requirePlugin('Layout').default;
 const RANK_KEY = 'user_rank';
 const sharedCanvas = wx.getSharedCanvas();
 const sharedContext = sharedCanvas.getContext('2d');
-sharedContext.scale(1, -1); // 翻转 Y 轴
-sharedContext.translate(0, -sharedCanvas.height); // 调整坐标系
 // test
 // setUserRecord(RANK_KEY, Math.ceil(Math.random() * 1000));
 const MessageType = {
