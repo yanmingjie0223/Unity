@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProjectConf:
     projectName: BaseProjectMini
-    Appid: wx9a2723fbc703037e
+    Appid: wx85d125798a4e2b0a
     CDN: https://baseprojectmini-1259097372.cos-website.ap-nanjing.myqcloud.com/BaseProjectMini/
     assetLoadType: 0
     compressDataPackage: 1
