@@ -1,0 +1,62 @@
+syntax = "proto3";
+package msg.user;
+import "msg.proto";
+
+message UserData {
+	string nickname = 1;
+	string openId = 2;
+	string avatarUrl = 3;
+	string province = 4;
+	string city = 5;
+}
+
+message ChipCell {
+	repeated int32 cells = 1;
+}
+
+message RankData {
+	int32 rank = 1;
+	string nickname = 2;
+	string avatarUrl = 3;
+	int32 level = 4;
+}
+
+message C2S_Login {
+	string nickname = 1;
+	string avatarUrl = 2;
+	string code = 3;
+	PlatformType platform = 4;
+}
+
+message S2C_Login {
+	MsgCode code = 1;
+	string message = 2;
+	string openId = 3;
+	string token = 4;
+	UserData user = 5;
+}
+
+message C2S_SaveData {
+	string openId = 1;
+	string token = 2;
+	UserData user = 3;
+}
+
+message S2C_SaveData {
+	MsgCode code = 1;
+	string message = 2;
+}
+
+message C2S_RestartGame {
+	string openId = 1;
+	string token = 2;
+}
+
+message C2S_WorldRank {
+	string openId = 1;
+	string token = 2;
+}
+
+message S2C_WorldRank {
+	repeated RankData ranks = 1;
+}
