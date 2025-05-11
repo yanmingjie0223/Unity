@@ -3,26 +3,41 @@ using UnityEngine;
 
 namespace YooAsset
 {
-	internal class YooAssetsDriver : MonoBehaviour
-	{
-		private static int LastestUpdateFrame = 0;
+    internal class YooAssetsDriver : MonoBehaviour
+    {
+#if UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void OnRuntimeInitialize()
+        {
+            LastestUpdateFrame = 0;
+        }
+#endif
 
-		void Update()
-		{
-			DebugCheckDuplicateDriver();
-			YooAssets.Update();
-		}
+        private static int LastestUpdateFrame = 0;
 
-		[Conditional("DEBUG")]
-		private void DebugCheckDuplicateDriver()
-		{
-			if (LastestUpdateFrame > 0)
-			{
-				if (LastestUpdateFrame == Time.frameCount)
-					YooLogger.Warning($"There are two {nameof(YooAssetsDriver)} in the scene. Please ensure there is always exactly one driver in the scene.");
-			}
+        void Update()
+        {
+            DebugCheckDuplicateDriver();
+            YooAssets.Update();
+        }
 
-			LastestUpdateFrame = Time.frameCount;
-		}
-	}
+#if UNITY_EDITOR
+        void OnApplicationQuit()
+        {
+            YooAssets.OnApplicationQuit();
+        }
+#endif
+
+        [Conditional("DEBUG")]
+        private void DebugCheckDuplicateDriver()
+        {
+            if (LastestUpdateFrame > 0)
+            {
+                if (LastestUpdateFrame == Time.frameCount)
+                    YooLogger.Warning($"There are two {nameof(YooAssetsDriver)} in the scene. Please ensure there is always exactly one driver in the scene.");
+            }
+
+            LastestUpdateFrame = Time.frameCount;
+        }
+    }
 }

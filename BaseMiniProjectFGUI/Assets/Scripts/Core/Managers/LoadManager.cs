@@ -1,31 +1,17 @@
 using System;
 using System.Collections;
 using YooAsset;
-using UnityEngine;
+using Object = UnityEngine.Object;
 
-public class LoadManager : MonoBehaviour
+public class LoadManager : SingletonDontDestroyMono<LoadManager>
 {
-    private static LoadManager _instance;
-    public static LoadManager GetInstance()
-    {
-        {
-            if (_instance == null)
-            {
-                return new GameObject("Load Manager").AddComponent<LoadManager>();
-            }
-            else
-            {
-                return _instance;
-            }
-        }
-    }
 
     public void Initialize()
     {
         YooAssets.Initialize();
     }
 
-    public void Load(string pkgName, string resName, Action<string> start, Action<float> progress, Action<bool> end)
+    public void Load(string pkgName, string resName, Action<string> start, Action<float> progress, Action<bool, Object> end)
     {
         StartCoroutine(LoadRes(pkgName, resName, start, progress, end));
     }
@@ -36,23 +22,18 @@ public class LoadManager : MonoBehaviour
         StartCoroutine(LoadGroupRes(pkgName, groupName, start, progress, end));
     }
 
-    public void LoadGroup(string pkgName, string groupName, Action<string> start, Action<float> progress, Action<bool> end)
-    {
-        StartCoroutine(LoadGroupRes(pkgName, groupName, start, progress, end));
-    }
-
     public void LoadPackage(string pkgName, EPlayMode playMode, Action<string> start, Action<float> progress, Action<bool> end)
     {
         StartCoroutine(LoadPackageRes(pkgName, playMode, start, progress, end));
     }
 
-    private IEnumerator LoadRes(string pkgName, string resName, Action<string> start, Action<float> progress, Action<bool> end)
+    private IEnumerator LoadRes(string pkgName, string resName, Action<string> start, Action<float> progress, Action<bool, Object> end)
     {
         start?.Invoke("loading start");
         var package = YooAssets.TryGetPackage(pkgName);
         if (package == null)
         {
-            end?.Invoke(true);
+            end?.Invoke(true, null);
         }
         else
         {
@@ -62,11 +43,11 @@ public class LoadManager : MonoBehaviour
 
             if (handler.Status != EOperationStatus.Succeed)
             {
-                end?.Invoke(true);
+                end?.Invoke(true, handler.AssetObject);
             }
             else
             {
-                end?.Invoke(false);
+                end?.Invoke(false, null);
             }
         }
     }
@@ -120,37 +101,59 @@ public class LoadManager : MonoBehaviour
         InitializationOperation initializationOperation = null;
         if (playMode == EPlayMode.EditorSimulateMode)
         {
-            var initParameters = new EditorSimulateModeParameters();
-            initParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(pkgName);
+            var buildResult = EditorSimulateModeHelper.SimulateBuild(pkgName);
+            var packageRoot = buildResult.PackageRootDirectory;
+            var editorFileSystemParams = FileSystemParameters.CreateDefaultEditorFileSystemParameters(packageRoot);
+            EditorSimulateModeParameters initParameters = new()
+            {
+                EditorFileSystemParameters = editorFileSystemParams
+            };
             initializationOperation = package.InitializeAsync(initParameters);
         }
         // 单机运行模式
         if (playMode == EPlayMode.OfflinePlayMode)
         {
-            var initParameters = new OfflinePlayModeParameters();
+            var buildinFileSystemParams = FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
+            OfflinePlayModeParameters initParameters = new()
+            {
+                BuildinFileSystemParameters = buildinFileSystemParams
+            };
             initializationOperation = package.InitializeAsync(initParameters);
         }
         // 联机运行模式
         if (playMode == EPlayMode.HostPlayMode)
         {
             string serverUrl = PathUtils.GetHostServerURL();
-            var initParameters = new HostPlayModeParameters
+            IRemoteServices remoteServices = new RemoteServices(serverUrl, serverUrl);
+            var cacheFileSystemParams = FileSystemParameters.CreateDefaultCacheFileSystemParameters(remoteServices);
+            var buildinFileSystemParams = FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
+            HostPlayModeParameters initParameters = new()
             {
-                RemoteServices = new RemoteServices(serverUrl, serverUrl)
+                BuildinFileSystemParameters = buildinFileSystemParams,
+                CacheFileSystemParameters = cacheFileSystemParams
             };
             initializationOperation = package.InitializeAsync(initParameters);
         }
         // WebGL运行模式
         if (playMode == EPlayMode.WebPlayMode)
         {
-            YooAssets.SetCacheSystemDisableCacheOnWebGL();
-
+            // 创建远程服务类
             string serverUrl = PathUtils.GetHostServerURL();
-            var initParameters = new WebPlayModeParameters
-            {
-                BuildinQueryServices = new BuildQueryServices(),
-                RemoteServices = new RemoteServices(serverUrl, serverUrl)
-            };
+            var remoteServices = new RemoteServices(serverUrl, serverUrl);
+            // 创建解密服务类
+            var decryptionServices = new WebDecryption();
+            WebPlayModeParameters initParameters = new();
+#if UNITY_EDITOR
+            var webServerFileSystemParams = FileSystemParameters.CreateDefaultWebServerFileSystemParameters();
+            var webRemoteFileSystemParams = FileSystemParameters.CreateDefaultWebRemoteFileSystemParameters(remoteServices);
+            initParameters.WebServerFileSystemParameters = webServerFileSystemParams;
+            initParameters.WebRemoteFileSystemParameters = webRemoteFileSystemParams;
+#elif WEIXINMINIGAME
+            // 小游戏缓存根目录
+            // 注意：如果有子目录，请修改此处！
+            string packageRoot = $"{WeChatWASM.WX.env.USER_DATA_PATH}/__GAME_FILE_CACHE";
+            initParameters.WebServerFileSystemParameters = WechatFileSystemCreater.CreateFileSystemParameters(packageRoot, remoteServices, decryptionServices);
+#endif
             initializationOperation = package.InitializeAsync(initParameters);
         }
         // 等待加载结果
@@ -164,7 +167,7 @@ public class LoadManager : MonoBehaviour
         else
         {
             // 版本
-            var operation = package.UpdatePackageVersionAsync();
+            var operation = package.RequestPackageVersionAsync();
             progress?.Invoke(operation.Progress);
             yield return operation;
 
@@ -189,17 +192,6 @@ public class LoadManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    protected virtual void Awake()
-    {
-        if (_instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
 }

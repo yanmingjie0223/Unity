@@ -9,30 +9,30 @@ namespace Cysharp.Threading.Tasks
 {
     public partial struct UniTask
     {
-        public static UniTask WaitUntil(Func<bool> predicate, PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken cancellationToken = default(CancellationToken), bool cancelImmediately = false)
+        public static UniTask WaitUntil(Func<bool> predicate, PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new UniTask(WaitUntilPromise.Create(predicate, timing, cancellationToken, cancelImmediately, out var token), token);
+            return new UniTask(WaitUntilPromise.Create(predicate, timing, cancellationToken, out var token), token);
         }
 
-        public static UniTask WaitWhile(Func<bool> predicate, PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken cancellationToken = default(CancellationToken), bool cancelImmediately = false)
+        public static UniTask WaitWhile(Func<bool> predicate, PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new UniTask(WaitWhilePromise.Create(predicate, timing, cancellationToken, cancelImmediately, out var token), token);
+            return new UniTask(WaitWhilePromise.Create(predicate, timing, cancellationToken, out var token), token);
         }
 
-        public static UniTask WaitUntilCanceled(CancellationToken cancellationToken, PlayerLoopTiming timing = PlayerLoopTiming.Update, bool completeImmediately = false)
+        public static UniTask WaitUntilCanceled(CancellationToken cancellationToken, PlayerLoopTiming timing = PlayerLoopTiming.Update)
         {
-            return new UniTask(WaitUntilCanceledPromise.Create(cancellationToken, timing, completeImmediately, out var token), token);
+            return new UniTask(WaitUntilCanceledPromise.Create(cancellationToken, timing, out var token), token);
         }
 
-        public static UniTask<U> WaitUntilValueChanged<T, U>(T target, Func<T, U> monitorFunction, PlayerLoopTiming monitorTiming = PlayerLoopTiming.Update, IEqualityComparer<U> equalityComparer = null, CancellationToken cancellationToken = default(CancellationToken), bool cancelImmediately = false)
+        public static UniTask<U> WaitUntilValueChanged<T, U>(T target, Func<T, U> monitorFunction, PlayerLoopTiming monitorTiming = PlayerLoopTiming.Update, IEqualityComparer<U> equalityComparer = null, CancellationToken cancellationToken = default(CancellationToken))
           where T : class
         {
             var unityObject = target as UnityEngine.Object;
             var isUnityObject = target is UnityEngine.Object; // don't use (unityObject == null)
 
             return new UniTask<U>(isUnityObject
-                ? WaitUntilValueChangedUnityObjectPromise<T, U>.Create(target, monitorFunction, equalityComparer, monitorTiming, cancellationToken, cancelImmediately, out var token)
-                : WaitUntilValueChangedStandardObjectPromise<T, U>.Create(target, monitorFunction, equalityComparer, monitorTiming, cancellationToken, cancelImmediately, out token), token);
+                ? WaitUntilValueChangedUnityObjectPromise<T, U>.Create(target, monitorFunction, equalityComparer, monitorTiming, cancellationToken, out var token)
+                : WaitUntilValueChangedStandardObjectPromise<T, U>.Create(target, monitorFunction, equalityComparer, monitorTiming, cancellationToken, out token), token);
         }
 
         sealed class WaitUntilPromise : IUniTaskSource, IPlayerLoopItem, ITaskPoolNode<WaitUntilPromise>
@@ -48,8 +48,6 @@ namespace Cysharp.Threading.Tasks
 
             Func<bool> predicate;
             CancellationToken cancellationToken;
-            CancellationTokenRegistration cancellationTokenRegistration;
-            bool cancelImmediately;
 
             UniTaskCompletionSourceCore<object> core;
 
@@ -57,7 +55,7 @@ namespace Cysharp.Threading.Tasks
             {
             }
 
-            public static IUniTaskSource Create(Func<bool> predicate, PlayerLoopTiming timing, CancellationToken cancellationToken, bool cancelImmediately, out short token)
+            public static IUniTaskSource Create(Func<bool> predicate, PlayerLoopTiming timing, CancellationToken cancellationToken, out short token)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -71,16 +69,6 @@ namespace Cysharp.Threading.Tasks
 
                 result.predicate = predicate;
                 result.cancellationToken = cancellationToken;
-                result.cancelImmediately = cancelImmediately;
-
-                if (cancelImmediately && cancellationToken.CanBeCanceled)
-                {
-                    result.cancellationTokenRegistration = cancellationToken.RegisterWithoutCaptureExecutionContext(state =>
-                    {
-                        var promise = (WaitUntilPromise)state;
-                        promise.core.TrySetCanceled(promise.cancellationToken);
-                    }, result);
-                }
 
                 TaskTracker.TrackActiveTask(result, 3);
 
@@ -98,10 +86,7 @@ namespace Cysharp.Threading.Tasks
                 }
                 finally
                 {
-                    if (!(cancelImmediately && cancellationToken.IsCancellationRequested))
-                    {
-                        TryReturn();
-                    }
+                    TryReturn();
                 }
             }
 
@@ -151,8 +136,6 @@ namespace Cysharp.Threading.Tasks
                 core.Reset();
                 predicate = default;
                 cancellationToken = default;
-                cancellationTokenRegistration.Dispose();
-                cancelImmediately = default;
                 return pool.TryPush(this);
             }
         }
@@ -170,8 +153,6 @@ namespace Cysharp.Threading.Tasks
 
             Func<bool> predicate;
             CancellationToken cancellationToken;
-            CancellationTokenRegistration cancellationTokenRegistration;
-            bool cancelImmediately;
 
             UniTaskCompletionSourceCore<object> core;
 
@@ -179,7 +160,7 @@ namespace Cysharp.Threading.Tasks
             {
             }
 
-            public static IUniTaskSource Create(Func<bool> predicate, PlayerLoopTiming timing, CancellationToken cancellationToken, bool cancelImmediately, out short token)
+            public static IUniTaskSource Create(Func<bool> predicate, PlayerLoopTiming timing, CancellationToken cancellationToken, out short token)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -193,15 +174,6 @@ namespace Cysharp.Threading.Tasks
 
                 result.predicate = predicate;
                 result.cancellationToken = cancellationToken;
-                
-                if (cancelImmediately && cancellationToken.CanBeCanceled)
-                {
-                    result.cancellationTokenRegistration = cancellationToken.RegisterWithoutCaptureExecutionContext(state =>
-                    {
-                        var promise = (WaitWhilePromise)state;
-                        promise.core.TrySetCanceled(promise.cancellationToken);
-                    }, result);
-                }
 
                 TaskTracker.TrackActiveTask(result, 3);
 
@@ -219,10 +191,7 @@ namespace Cysharp.Threading.Tasks
                 }
                 finally
                 {
-                    if (!(cancelImmediately && cancellationToken.IsCancellationRequested))
-                    {
-                        TryReturn();
-                    }
+                    TryReturn();
                 }
             }
 
@@ -272,8 +241,6 @@ namespace Cysharp.Threading.Tasks
                 core.Reset();
                 predicate = default;
                 cancellationToken = default;
-                cancellationTokenRegistration.Dispose();
-                cancelImmediately = default;
                 return pool.TryPush(this);
             }
         }
@@ -290,8 +257,6 @@ namespace Cysharp.Threading.Tasks
             }
 
             CancellationToken cancellationToken;
-            CancellationTokenRegistration cancellationTokenRegistration;
-            bool cancelImmediately;
 
             UniTaskCompletionSourceCore<object> core;
 
@@ -299,7 +264,7 @@ namespace Cysharp.Threading.Tasks
             {
             }
 
-            public static IUniTaskSource Create(CancellationToken cancellationToken, PlayerLoopTiming timing, bool cancelImmediately, out short token)
+            public static IUniTaskSource Create(CancellationToken cancellationToken, PlayerLoopTiming timing, out short token)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -312,16 +277,6 @@ namespace Cysharp.Threading.Tasks
                 }
 
                 result.cancellationToken = cancellationToken;
-                result.cancelImmediately = cancelImmediately;
-
-                if (cancelImmediately && cancellationToken.CanBeCanceled)
-                {
-                    result.cancellationTokenRegistration = cancellationToken.RegisterWithoutCaptureExecutionContext(state =>
-                    {
-                        var promise = (WaitUntilCanceledPromise)state;
-                        promise.core.TrySetResult(null);
-                    }, result);
-                }
 
                 TaskTracker.TrackActiveTask(result, 3);
 
@@ -339,10 +294,7 @@ namespace Cysharp.Threading.Tasks
                 }
                 finally
                 {
-                    if (!(cancelImmediately && cancellationToken.IsCancellationRequested))
-                    {
-                        TryReturn();
-                    }
+                    TryReturn();
                 }
             }
 
@@ -377,8 +329,6 @@ namespace Cysharp.Threading.Tasks
                 TaskTracker.RemoveTracking(this);
                 core.Reset();
                 cancellationToken = default;
-                cancellationTokenRegistration.Dispose();
-                cancelImmediately = default;
                 return pool.TryPush(this);
             }
         }
@@ -401,8 +351,6 @@ namespace Cysharp.Threading.Tasks
             Func<T, U> monitorFunction;
             IEqualityComparer<U> equalityComparer;
             CancellationToken cancellationToken;
-            CancellationTokenRegistration cancellationTokenRegistration;
-            bool cancelImmediately;
 
             UniTaskCompletionSourceCore<U> core;
 
@@ -410,7 +358,7 @@ namespace Cysharp.Threading.Tasks
             {
             }
 
-            public static IUniTaskSource<U> Create(T target, Func<T, U> monitorFunction, IEqualityComparer<U> equalityComparer, PlayerLoopTiming timing, CancellationToken cancellationToken, bool cancelImmediately, out short token)
+            public static IUniTaskSource<U> Create(T target, Func<T, U> monitorFunction, IEqualityComparer<U> equalityComparer, PlayerLoopTiming timing, CancellationToken cancellationToken, out short token)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -428,16 +376,6 @@ namespace Cysharp.Threading.Tasks
                 result.currentValue = monitorFunction(target);
                 result.equalityComparer = equalityComparer ?? UnityEqualityComparer.GetDefault<U>();
                 result.cancellationToken = cancellationToken;
-                result.cancelImmediately = cancelImmediately;
-                
-                if (cancelImmediately && cancellationToken.CanBeCanceled)
-                {
-                    result.cancellationTokenRegistration = cancellationToken.RegisterWithoutCaptureExecutionContext(state =>
-                    {
-                        var promise = (WaitUntilValueChangedUnityObjectPromise<T, U>)state;
-                        promise.core.TrySetCanceled(promise.cancellationToken);
-                    }, result);
-                }
 
                 TaskTracker.TrackActiveTask(result, 3);
 
@@ -455,10 +393,7 @@ namespace Cysharp.Threading.Tasks
                 }
                 finally
                 {
-                    if (!(cancelImmediately && cancellationToken.IsCancellationRequested))
-                    {
-                        TryReturn();
-                    }
+                    TryReturn();
                 }
             }
 
@@ -518,8 +453,6 @@ namespace Cysharp.Threading.Tasks
                 monitorFunction = default;
                 equalityComparer = default;
                 cancellationToken = default;
-                cancellationTokenRegistration.Dispose();
-                cancelImmediately = default;
                 return pool.TryPush(this);
             }
         }
@@ -541,8 +474,6 @@ namespace Cysharp.Threading.Tasks
             Func<T, U> monitorFunction;
             IEqualityComparer<U> equalityComparer;
             CancellationToken cancellationToken;
-            CancellationTokenRegistration cancellationTokenRegistration;
-            bool cancelImmediately;
 
             UniTaskCompletionSourceCore<U> core;
 
@@ -550,7 +481,7 @@ namespace Cysharp.Threading.Tasks
             {
             }
 
-            public static IUniTaskSource<U> Create(T target, Func<T, U> monitorFunction, IEqualityComparer<U> equalityComparer, PlayerLoopTiming timing, CancellationToken cancellationToken, bool cancelImmediately, out short token)
+            public static IUniTaskSource<U> Create(T target, Func<T, U> monitorFunction, IEqualityComparer<U> equalityComparer, PlayerLoopTiming timing, CancellationToken cancellationToken, out short token)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -567,16 +498,6 @@ namespace Cysharp.Threading.Tasks
                 result.currentValue = monitorFunction(target);
                 result.equalityComparer = equalityComparer ?? UnityEqualityComparer.GetDefault<U>();
                 result.cancellationToken = cancellationToken;
-                result.cancelImmediately = cancelImmediately;
-                
-                if (cancelImmediately && cancellationToken.CanBeCanceled)
-                {
-                    result.cancellationTokenRegistration = cancellationToken.RegisterWithoutCaptureExecutionContext(state =>
-                    {
-                        var promise = (WaitUntilValueChangedStandardObjectPromise<T, U>)state;
-                        promise.core.TrySetCanceled(promise.cancellationToken);
-                    }, result);
-                }
 
                 TaskTracker.TrackActiveTask(result, 3);
 
@@ -594,10 +515,7 @@ namespace Cysharp.Threading.Tasks
                 }
                 finally
                 {
-                    if (!(cancelImmediately && cancellationToken.IsCancellationRequested))
-                    {
-                        TryReturn();
-                    }
+                    TryReturn();
                 }
             }
 
@@ -657,8 +575,6 @@ namespace Cysharp.Threading.Tasks
                 monitorFunction = default;
                 equalityComparer = default;
                 cancellationToken = default;
-                cancellationTokenRegistration.Dispose();
-                cancelImmediately = default;
                 return pool.TryPush(this);
             }
         }

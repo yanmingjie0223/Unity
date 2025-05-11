@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using UnityEngine;
 using YooAsset;
 
 public class YooManager : Singleton<YooManager>
@@ -8,6 +10,29 @@ public class YooManager : Singleton<YooManager>
     {
     }
 
+}
+
+public class WebDecryption : IWebDecryptionServices
+{
+    public WebDecryptResult LoadAssetBundle(WebDecryptFileInfo fileInfo)
+    {
+        // 安全起见可以拷贝一份原始数据
+        byte[] copyData = new byte[fileInfo.FileData.Length];
+        Buffer.BlockCopy(fileInfo.FileData, 0, copyData, 0, fileInfo.FileData.Length);
+
+        // 实现你的解密算法
+        for (int i = 0; i < copyData.Length; i++)
+        {
+            // 暂无解密
+        }
+
+        // 从内存中加载AssetBundle
+        WebDecryptResult decryptResult = new()
+        {
+            Result = AssetBundle.LoadFromMemory(copyData)
+        };
+        return decryptResult;
+    }
 }
 
 public class RemoteServices : IRemoteServices
@@ -30,16 +55,6 @@ public class RemoteServices : IRemoteServices
     string IRemoteServices.GetRemoteFallbackURL(string fileName)
     {
         return $"{_fallbackHostServer}/{fileName}";
-    }
-
-}
-
-public class BuildQueryServices : IBuildinQueryServices
-{
-
-    public bool QueryStreamingAssets(string packageName, string fileName)
-    {
-        return false;
     }
 
 }

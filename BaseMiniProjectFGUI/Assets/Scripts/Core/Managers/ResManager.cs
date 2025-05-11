@@ -55,12 +55,11 @@ public class ResManager : Singleton<ResManager>
     ) where T : Object
     {
         string groupName = PathUtils.GetGroupName(groupType);
-        LoadManager.GetInstance().Load(pkgName, $"{groupName}_{resName}", start, progress, (bool isError) =>
+        LoadManager.GetInstance().Load(pkgName, $"{groupName}_{resName}", start, progress, (bool isError, Object assetObject) =>
         {
             if (!isError)
             {
-                var asset = GetAssetSync<T>(pkgName, groupType, resName);
-                end?.Invoke(isError, asset);
+                end?.Invoke(isError, assetObject as T);
             }
             else
             {
@@ -108,7 +107,7 @@ public class ResManager : Singleton<ResManager>
                 }
 
                 var bResName = resList[i];
-                LoadManager.GetInstance().Load(pkgName, $"{GroupTypeName.UI}_{bResName}", null, null, (bool isError) =>
+                LoadManager.GetInstance().Load(pkgName, $"{GroupTypeName.UI}_{bResName}", null, null, (bool isError, Object assetObject) =>
                 {
                     if (isError)
                     {

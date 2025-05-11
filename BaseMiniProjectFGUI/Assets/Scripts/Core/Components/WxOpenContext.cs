@@ -25,14 +25,14 @@ public class WxMessageRankData
     public int rank;
     public string nickname;
     public string avatarUrl;
-    public int time;
+    public int level;
 
     public void Initialize(Msg.User.RankData rankData)
     {
         rank = rankData.Rank;
         nickname = rankData.Nickname;
         avatarUrl = rankData.AvatarUrl;
-        time = rankData.Time;
+        level = rankData.Level;
     }
 }
 
@@ -40,14 +40,14 @@ public class WxMessageRankData
 public class WxMessageRecordData
 {
     public string type;
-    public int time;
+    public int level;
 }
 
 [System.Serializable]
 public class WxMessageUserData
 {
     public string type;
-    public int time;
+    public int level;
     public string avatarUrl;
     public string nickname;
     public string version;
