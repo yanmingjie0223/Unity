@@ -1,37 +1,44 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections;
-using UnityEngine;
 using UnityEngine.Networking;
 
-public class HttpManager : SingletonMono<HttpManager>
+public class HttpManager : SingletonDontDestroyMono<HttpManager>
 {
 
-    public void Send(string routerUrl, C2S_Base data, Action<string> complete, Action<string> fail)
+    public void SendBuffer(string routerUrl, byte[] buffer, Action<byte[]> complete = null, Action<string> fail = null)
     {
-        StartCoroutine(OnSend(routerUrl, data, complete, fail));
+        StartCoroutine(OnSendBuffer(routerUrl, buffer, complete, fail));
     }
 
-    private IEnumerator OnSend(string routerUrl, C2S_Base data, Action<string> complete, Action<string> fail)
+    private IEnumerator OnSendBuffer(string routerUrl, byte[] buffer, Action<byte[]> complete, Action<string> fail)
     {
-        // Post请求的地址
-        string url = GameConfig.httpRoot + routerUrl;
-        // Post请求的参数
-        WWWForm form = new();
-        form.AddField("data", JsonConvert.SerializeObject(data, Formatting.Indented));
-        UnityWebRequest webRequest = UnityWebRequest.Post(url, form);
-        // 发送请求
-        yield return webRequest.SendWebRequest();
-        if (string.IsNullOrEmpty(webRequest.error))
+        if (string.IsNullOrEmpty(GameConfig.httpRoot))
         {
-            //Post的请求成功
-            complete.Invoke(webRequest.downloadHandler.text);
+            yield break;
+        }
+
+        string url = GameConfig.httpRoot + routerUrl;
+        UnityWebRequest request = new(url, "POST")
+        {
+            uploadHandler = new UploadHandlerRaw(buffer),
+            downloadHandler = new DownloadHandlerBuffer()
+        };
+        request.SetRequestHeader("Content-Type", "application/octet-stream");
+
+        yield return request.SendWebRequest();
+
+        if (
+            request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError
+        )
+        {
+            fail?.Invoke("");
         }
         else
         {
-            //Post的请求失败
-            fail?.Invoke("");
+            complete?.Invoke(request.downloadHandler.data);
         }
+        request.Dispose();
     }
 
 }

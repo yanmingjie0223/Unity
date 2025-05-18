@@ -13,19 +13,22 @@ namespace cfg
 {
 public partial class Tables
 {
-    public item.TbItem TbItem {get; }
-    public item.TbLanguage TbLanguage {get; }
+    public ncb.TbItem TbItem {get; }
+    public ncb.TbGlobal TbGlobal {get; }
+    public ncb.TbLanguage TbLanguage {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
-        TbItem = new item.TbItem(loader("item_tbitem"));
-        TbLanguage = new item.TbLanguage(loader("item_tblanguage"));
+        TbItem = new ncb.TbItem(loader("ncb_tbitem"));
+        TbGlobal = new ncb.TbGlobal(loader("ncb_tbglobal"));
+        TbLanguage = new ncb.TbLanguage(loader("ncb_tblanguage"));
         ResolveRef();
     }
     
     private void ResolveRef()
     {
         TbItem.ResolveRef(this);
+        TbGlobal.ResolveRef(this);
         TbLanguage.ResolveRef(this);
     }
 }

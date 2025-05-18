@@ -19,7 +19,7 @@ MonoBehaviour:
     assetLoadType: 0
     compressDataPackage: 1
     VideoUrl: 
-    DST: D:\Files\Git\Unity\BaseMiniProjectFGUI\BaseProjectMini\Release
+    DST: D:\Files\Git\Unity\BaseMiniProjectFGUI\Release
     StreamCDN: 
     bundleHashLength: 32
     bundlePathIdentifier: StreamingAssets;
@@ -37,7 +37,7 @@ MonoBehaviour:
     texturesPath: Assets/Textures
     needCacheTextures: 1
     loadingBarWidth: 240
-    needCheckUpdate: 0
+    needCheckUpdate: 1
     disableHighPerformanceFallback: 0
     IOSDevicePixelRatio: 0
   SDKOptions:
@@ -45,9 +45,10 @@ MonoBehaviour:
     UseCompressedTexture: 0
     UseMiniGameChat: 0
     PreloadWXFont: 0
+    disableMultiTouch: 0
   CompileOptions:
     DevelopBuild: 0
-    AutoProfile: 0
+    AutoProfile: 1
     ScriptOnly: 0
     Il2CppOptimizeSize: 1
     profilingFuncs: 0

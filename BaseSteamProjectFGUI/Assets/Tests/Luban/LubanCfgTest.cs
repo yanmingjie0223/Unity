@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.IO;
-using cfg;
 using Luban;
 using NUnit.Framework;
 using UnityEngine;
@@ -13,11 +12,11 @@ public class LubanCfgTest
     [Test]
     public void LubanCfgTestSimplePasses()
     {
-        var tablesCtor = typeof(Tables).GetConstructors()[0];
+        var tablesCtor = typeof(cfg.Tables).GetConstructors()[0];
         var loaderReturnType = tablesCtor.GetParameters()[0].ParameterType.GetGenericArguments()[1];
         Delegate loader = new Func<string, ByteBuf>(LoadByteBuf);
-        var tables = (Tables)tablesCtor.Invoke(new object[] { loader });
-        tables.TbItem.DataMap.TryGetValue(10000, out Item item);
+        var tables = (cfg.Tables)tablesCtor.Invoke(new object[] { loader });
+        tables.TbItem.DataMap.TryGetValue(10000, out cfg.ncb.Item item);
         Debug.Log(item.ToString());
     }
 

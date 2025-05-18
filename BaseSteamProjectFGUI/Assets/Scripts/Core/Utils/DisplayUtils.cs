@@ -16,7 +16,7 @@ public class DisplayUtils
     public static string GetI18nByKey(string key)
     {
         var tables = ConfigManager.GetInstance().tables;
-        tables.TbLanguage.DataMap.TryGetValue(key, out cfg.Language value);
+        tables.TbLanguage.DataMap.TryGetValue(key, out cfg.ncb.Language value);
         if (value == null)
         {
             Debug.LogWarning("language not found key : " + key);

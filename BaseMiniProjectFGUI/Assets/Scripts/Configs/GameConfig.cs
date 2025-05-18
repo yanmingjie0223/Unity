@@ -13,6 +13,10 @@
 #else
     public static ServerType serverType = ServerType.Web;
 #endif
+    /// <summary>
+    /// 排行榜版本，用来清空排行榜
+    /// </summary>
+    public static readonly string rankVersion = "v1.0";
 
     /// <summary>
     /// view window背后黑色透明层
@@ -26,6 +30,15 @@
     /// 屏幕高度
     /// </summary>
     public static readonly int initHeight = 1334;
+
+    /// <summary>
+    /// cdn跟地址
+    /// </summary>
+    public static readonly string cdnRoot = "https://baseprojectmini-1259097372.cos-website.ap-nanjing.myqcloud.com/BaseProjectMini";
+    /// <summary>
+    /// 分享地址
+    /// </summary>
+    public static readonly string shareUrl = $"{cdnRoot}/Wx/Share/fengmian.png";
 
     /// <summary>
     /// http请求根地址

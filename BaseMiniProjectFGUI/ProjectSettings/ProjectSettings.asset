@@ -723,6 +723,7 @@ PlayerSettings:
   webGLPowerPreference: 2
   scriptingDefineSymbols:
     Standalone: FAIRYGUI_TMPRO
+    WebGL: WEIXINMINIGAME
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

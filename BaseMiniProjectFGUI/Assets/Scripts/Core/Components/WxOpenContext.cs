@@ -149,7 +149,7 @@ public class WxOpenContext : SingletonMono<WxOpenContext>
         var message = new WxMessageRecordData
         {
             type = "setUserRecord",
-            time = time
+            level = time
         };
         var messageStr = JsonConvert.SerializeObject(message, Formatting.Indented);
         openDataContext.PostMessage(messageStr);
@@ -165,7 +165,7 @@ public class WxOpenContext : SingletonMono<WxOpenContext>
         var message = new WxMessageUserData
         {
             type = "setUserData",
-            time = userData.completeTime,
+            level = userData.GetLevel(),
             avatarUrl = wxUserInfo != null ? wxUserInfo.avatarUrl : "",
             nickname = wxUserInfo != null ? wxUserInfo.nickName : "",
             version = GameConfig.rankVersion,
