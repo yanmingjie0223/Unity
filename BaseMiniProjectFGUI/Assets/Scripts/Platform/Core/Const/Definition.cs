@@ -9,10 +9,8 @@
 
     public enum PlatformType
     {
-        Unknown = 0,
-        Wx,
-        QQ,
-        Dy,
+        H5 = 0,
+        WX,
     }
 
     public class UserBody

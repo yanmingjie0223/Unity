@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using WeChatWASM;
 
 namespace Assets.Scripts.Platform
@@ -6,6 +7,58 @@ namespace Assets.Scripts.Platform
 
     public class WXSystem : ISystem
     {
+
+        public void InitSDK(Action<int> initCB)
+        {
+            WX.InitSDK(initCB);
+        }
+
+        public void LoginSDK(Action<string> completeCB, Action<string> errorCB)
+        {
+            WX.Login(new LoginOption()
+            {
+                success = (LoginSuccessCallbackResult rt) =>
+                {
+                    completeCB?.Invoke(rt.code);
+                },
+                fail = (RequestFailCallbackErr rt) =>
+                {
+                    errorCB?.Invoke(rt.errMsg);
+                }
+            });
+        }
+
+        public void InitUserInfo(Action<UserBody> completeCB, Action<string> errorCB)
+        {
+            WX.GetPrivacySetting(new GetPrivacySettingOption()
+            {
+                success = (res) =>
+                {
+                    if (res.needAuthorization)
+                    {
+                        WX.RequirePrivacyAuthorize(new RequirePrivacyAuthorizeOption()
+                        {
+                            success = (res) =>
+                            {
+                                GetUserInfo(completeCB, errorCB);
+                            },
+                            fail = (err) =>
+                            {
+                                errorCB?.Invoke(err.errMsg);
+                            },
+                        });
+                    }
+                    else
+                    {
+                        GetUserInfo(completeCB, errorCB);
+                    }
+                },
+                fail = (err) =>
+                {
+                    errorCB?.Invoke(err.errMsg);
+                },
+            });
+        }
 
         public void Exit()
         {
@@ -85,6 +138,59 @@ namespace Assets.Scripts.Platform
                 title = title,
                 query = query,
                 imageUrl = imageUrl,
+            });
+        }
+
+        private void GetUserInfo(Action<UserBody> completeCB, Action<string> errorCB)
+        {
+            WX.GetSetting(new GetSettingOption()
+            {
+                success = (GetSettingSuccessCallbackResult rt) =>
+                {
+                    if (rt.authSetting.ContainsKey("scope.userInfo"))
+                    {
+                        WX.GetUserInfo(new GetUserInfoOption()
+                        {
+                            lang = "zh_CN",
+                            success = (GetUserInfoSuccessCallbackResult rt) =>
+                            {
+                                UserBody userBodyInfo = new()
+                                {
+                                    nickName = rt.userInfo.nickName,
+                                    avatarUrl = rt.userInfo.avatarUrl,
+                                    country = rt.userInfo.country,
+                                    province = rt.userInfo.province,
+                                    city = rt.userInfo.city,
+                                    language = rt.userInfo.language,
+                                    gender = rt.userInfo.gender
+                                };
+                                completeCB?.Invoke(userBodyInfo);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        var button = WX.CreateUserInfoButton(0, 0, Screen.width, Screen.height, "zh_CN", false);
+                        button.OnTap((WXUserInfoResponse rt) =>
+                        {
+                            UserBody userBodyInfo = new()
+                            {
+                                nickName = rt.userInfo.nickName,
+                                avatarUrl = rt.userInfo.avatarUrl,
+                                country = rt.userInfo.country,
+                                province = rt.userInfo.province,
+                                city = rt.userInfo.city,
+                                language = rt.userInfo.language,
+                                gender = rt.userInfo.gender
+                            };
+                            completeCB?.Invoke(userBodyInfo);
+                        });
+                    }
+                },
+                fail = (GeneralCallbackResult err) =>
+                {
+                    errorCB?.Invoke(err.errMsg);
+                }
             });
         }
 

@@ -1,8 +1,30 @@
-﻿namespace Assets.Scripts.Platform
+﻿using System;
+
+namespace Assets.Scripts.Platform
 {
 
     public interface ISystem
     {
+
+        /// <summary>
+        /// 初始化平台sdk
+        /// </summary>
+        /// <param name="initCB"></param>
+        void InitSDK(Action<int> initCB);
+
+        /// <summary>
+        /// 登录sdk返回code
+        /// </summary>
+        /// <param name="completeCB"></param>
+        /// <param name="errorCB"></param>
+        void LoginSDK(Action<string> completeCB, Action<string> errorCB);
+
+        /// <summary>
+        /// 获取user数据
+        /// </summary>
+        /// <param name="completeCB"></param>
+        /// <param name="errorCB"></param>
+        void InitUserInfo(Action<UserBody> completeCB, Action<string> errorCB);
 
         /// <summary>
 		/// 退出游戏
