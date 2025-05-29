@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Newtonsoft.Json;
 using UnityEngine;
 #if !UNITY_EDITOR && WEIXINMINIGAME
 using WeChatWASM;
@@ -103,7 +102,7 @@ public class WxOpenContext : SingletonMono<WxOpenContext>
         {
             type = "showFriendsRank"
         };
-        var messageStr = JsonConvert.SerializeObject(message, Formatting.Indented);
+        var messageStr = JsonUtility.ToJson(message);
         openDataContext.PostMessage(messageStr);
 #endif
     }
@@ -116,7 +115,7 @@ public class WxOpenContext : SingletonMono<WxOpenContext>
         {
             type = "showGroupFriendsRank"
         };
-        var messageStr = JsonConvert.SerializeObject(message, Formatting.Indented);
+        var messageStr = JsonUtility.ToJson(message);
         openDataContext.PostMessage(messageStr);
 #endif
     }
@@ -137,7 +136,7 @@ public class WxOpenContext : SingletonMono<WxOpenContext>
             type = "showWorldRank",
             data = datas
         };
-        var messageStr = JsonConvert.SerializeObject(message, Formatting.Indented);
+        var messageStr = JsonUtility.ToJson(message);
         openDataContext.PostMessage(messageStr);
 #endif
     }
@@ -151,7 +150,7 @@ public class WxOpenContext : SingletonMono<WxOpenContext>
             type = "setUserRecord",
             level = time
         };
-        var messageStr = JsonConvert.SerializeObject(message, Formatting.Indented);
+        var messageStr = JsonUtility.ToJson(message);
         openDataContext.PostMessage(messageStr);
 #endif
     }
@@ -171,7 +170,7 @@ public class WxOpenContext : SingletonMono<WxOpenContext>
             version = GameConfig.rankVersion,
             openId = userData.GetOpenId(),
         };
-        var messageStr = JsonConvert.SerializeObject(message, Formatting.Indented);
+        var messageStr = JsonUtility.ToJson(message);
         openDataContext.PostMessage(messageStr);
 #endif
     }
