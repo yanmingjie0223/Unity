@@ -17,8 +17,9 @@
             _options = null;
         }
 
-        public void Show()
+        public void Show(ExpoOptions options)
         {
+            Initialize(options);
             if (_options == null)
             {
                 return;

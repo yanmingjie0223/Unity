@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !UNITY_EDITOR && WEIXINMINIGAME
+using UnityEngine;
 using System;
 using WeChatWASM;
 
@@ -60,6 +61,45 @@ namespace Assets.Scripts.Platform
             });
         }
 
+        public void TryGetUserInfo(Action<UserBody> completeCB, Action<string> errorCB)
+        {
+            WX.GetSetting(new GetSettingOption()
+            {
+                success = (GetSettingSuccessCallbackResult rt) =>
+                {
+                    if (rt.authSetting.ContainsKey("scope.userInfo"))
+                    {
+                        WX.GetUserInfo(new GetUserInfoOption()
+                        {
+                            lang = "zh_CN",
+                            success = (GetUserInfoSuccessCallbackResult rt) =>
+                            {
+                                UserBody userBodyInfo = new()
+                                {
+                                    nickName = rt.userInfo.nickName,
+                                    avatarUrl = rt.userInfo.avatarUrl,
+                                    country = rt.userInfo.country,
+                                    province = rt.userInfo.province,
+                                    city = rt.userInfo.city,
+                                    language = rt.userInfo.language,
+                                    gender = rt.userInfo.gender
+                                };
+                                completeCB?.Invoke(userBodyInfo);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        errorCB?.Invoke("");
+                    }
+                },
+                fail = (GeneralCallbackResult err) =>
+                {
+                    errorCB?.Invoke(err.errMsg);
+                }
+            });
+        }
+
         public void Exit()
         {
             WX.ExitMiniProgram(null);
@@ -83,6 +123,11 @@ namespace Assets.Scripts.Platform
         public void VibrateShort()
         {
             WX.VibrateShort(new VibrateShortOption() { type = "medium" });
+        }
+
+        public void VibrateLong()
+        {
+            WX.VibrateLong(new VibrateLongOption());
         }
 
         public bool CheckRunVersionIsOrHigher(string version)
@@ -184,6 +229,7 @@ namespace Assets.Scripts.Platform
                                 gender = rt.userInfo.gender
                             };
                             completeCB?.Invoke(userBodyInfo);
+                            button.Destroy();
                         });
                     }
                 },
@@ -197,3 +243,4 @@ namespace Assets.Scripts.Platform
     }
 
 }
+#endif

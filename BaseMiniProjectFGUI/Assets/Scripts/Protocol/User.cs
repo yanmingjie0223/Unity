@@ -27,26 +27,26 @@ namespace Msg.User {
             "Cgp1c2VyLnByb3RvEghtc2cudXNlchoJbXNnLnByb3RvIl8KCFVzZXJEYXRh",
             "EhAKCG5pY2tuYW1lGAEgASgJEg4KBm9wZW5JZBgCIAEoCRIRCglhdmF0YXJV",
             "cmwYAyABKAkSEAoIcHJvdmluY2UYBCABKAkSDAoEY2l0eRgFIAEoCSIZCghD",
-            "aGlwQ2VsbBINCgVjZWxscxgBIAMoBSJMCghSYW5rRGF0YRIMCgRyYW5rGAEg",
-            "ASgFEhAKCG5pY2tuYW1lGAIgASgJEhEKCWF2YXRhclVybBgDIAEoCRINCgVs",
-            "ZXZlbBgEIAEoBSJjCglDMlNfTG9naW4SEAoIbmlja25hbWUYASABKAkSEQoJ",
-            "YXZhdGFyVXJsGAIgASgJEgwKBGNvZGUYAyABKAkSIwoIcGxhdGZvcm0YBCAB",
-            "KA4yES5tc2cuUGxhdGZvcm1UeXBlInkKCVMyQ19Mb2dpbhIaCgRjb2RlGAEg",
-            "ASgOMgwubXNnLk1zZ0NvZGUSDwoHbWVzc2FnZRgCIAEoCRIOCgZvcGVuSWQY",
-            "AyABKAkSDQoFdG9rZW4YBCABKAkSIAoEdXNlchgFIAEoCzISLm1zZy51c2Vy",
-            "LlVzZXJEYXRhIk8KDEMyU19TYXZlRGF0YRIOCgZvcGVuSWQYASABKAkSDQoF",
-            "dG9rZW4YAiABKAkSIAoEdXNlchgDIAEoCzISLm1zZy51c2VyLlVzZXJEYXRh",
-            "IjsKDFMyQ19TYXZlRGF0YRIaCgRjb2RlGAEgASgOMgwubXNnLk1zZ0NvZGUS",
-            "DwoHbWVzc2FnZRgCIAEoCSIwCg9DMlNfUmVzdGFydEdhbWUSDgoGb3Blbklk",
-            "GAEgASgJEg0KBXRva2VuGAIgASgJIi4KDUMyU19Xb3JsZFJhbmsSDgoGb3Bl",
-            "bklkGAEgASgJEg0KBXRva2VuGAIgASgJIjIKDVMyQ19Xb3JsZFJhbmsSIQoF",
-            "cmFua3MYASADKAsyEi5tc2cudXNlci5SYW5rRGF0YWIGcHJvdG8z"));
+            "aGlwQ2VsbBINCgVjZWxscxgBIAMoBSJNCghSYW5rRGF0YRIMCgRyYW5rGAEg",
+            "ASgFEhAKCG5pY2tuYW1lGAIgASgJEhEKCWF2YXRhclVybBgDIAEoCRIOCgZy",
+            "ZWNvcmQYBCABKAUiYwoJQzJTX0xvZ2luEhAKCG5pY2tuYW1lGAEgASgJEhEK",
+            "CWF2YXRhclVybBgCIAEoCRIMCgRjb2RlGAMgASgJEiMKCHBsYXRmb3JtGAQg",
+            "ASgOMhEubXNnLlBsYXRmb3JtVHlwZSJ5CglTMkNfTG9naW4SGgoEY29kZRgB",
+            "IAEoDjIMLm1zZy5Nc2dDb2RlEg8KB21lc3NhZ2UYAiABKAkSDgoGb3Blbklk",
+            "GAMgASgJEg0KBXRva2VuGAQgASgJEiAKBHVzZXIYBSABKAsyEi5tc2cudXNl",
+            "ci5Vc2VyRGF0YSJPCgxDMlNfU2F2ZURhdGESDgoGb3BlbklkGAEgASgJEg0K",
+            "BXRva2VuGAIgASgJEiAKBHVzZXIYAyABKAsyEi5tc2cudXNlci5Vc2VyRGF0",
+            "YSI7CgxTMkNfU2F2ZURhdGESGgoEY29kZRgBIAEoDjIMLm1zZy5Nc2dDb2Rl",
+            "Eg8KB21lc3NhZ2UYAiABKAkiMAoPQzJTX1Jlc3RhcnRHYW1lEg4KBm9wZW5J",
+            "ZBgBIAEoCRINCgV0b2tlbhgCIAEoCSIuCg1DMlNfV29ybGRSYW5rEg4KBm9w",
+            "ZW5JZBgBIAEoCRINCgV0b2tlbhgCIAEoCSIyCg1TMkNfV29ybGRSYW5rEiEK",
+            "BXJhbmtzGAEgAygLMhIubXNnLnVzZXIuUmFua0RhdGFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Msg.MsgReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Msg.User.UserData), global::Msg.User.UserData.Parser, new[]{ "Nickname", "OpenId", "AvatarUrl", "Province", "City" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Msg.User.ChipCell), global::Msg.User.ChipCell.Parser, new[]{ "Cells" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Msg.User.RankData), global::Msg.User.RankData.Parser, new[]{ "Rank", "Nickname", "AvatarUrl", "Level" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Msg.User.RankData), global::Msg.User.RankData.Parser, new[]{ "Rank", "Nickname", "AvatarUrl", "Record" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Msg.User.C2S_Login), global::Msg.User.C2S_Login.Parser, new[]{ "Nickname", "AvatarUrl", "Code", "Platform" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Msg.User.S2C_Login), global::Msg.User.S2C_Login.Parser, new[]{ "Code", "Message", "OpenId", "Token", "User" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Msg.User.C2S_SaveData), global::Msg.User.C2S_SaveData.Parser, new[]{ "OpenId", "Token", "User" }, null, null, null, null),
@@ -633,7 +633,7 @@ namespace Msg.User {
       rank_ = other.rank_;
       nickname_ = other.nickname_;
       avatarUrl_ = other.avatarUrl_;
-      level_ = other.level_;
+      record_ = other.record_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -679,15 +679,15 @@ namespace Msg.User {
       }
     }
 
-    /// <summary>Field number for the "level" field.</summary>
-    public const int LevelFieldNumber = 4;
-    private int level_;
+    /// <summary>Field number for the "record" field.</summary>
+    public const int RecordFieldNumber = 4;
+    private int record_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Level {
-      get { return level_; }
+    public int Record {
+      get { return record_; }
       set {
-        level_ = value;
+        record_ = value;
       }
     }
 
@@ -709,7 +709,7 @@ namespace Msg.User {
       if (Rank != other.Rank) return false;
       if (Nickname != other.Nickname) return false;
       if (AvatarUrl != other.AvatarUrl) return false;
-      if (Level != other.Level) return false;
+      if (Record != other.Record) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -720,7 +720,7 @@ namespace Msg.User {
       if (Rank != 0) hash ^= Rank.GetHashCode();
       if (Nickname.Length != 0) hash ^= Nickname.GetHashCode();
       if (AvatarUrl.Length != 0) hash ^= AvatarUrl.GetHashCode();
-      if (Level != 0) hash ^= Level.GetHashCode();
+      if (Record != 0) hash ^= Record.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -751,9 +751,9 @@ namespace Msg.User {
         output.WriteRawTag(26);
         output.WriteString(AvatarUrl);
       }
-      if (Level != 0) {
+      if (Record != 0) {
         output.WriteRawTag(32);
-        output.WriteInt32(Level);
+        output.WriteInt32(Record);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -777,9 +777,9 @@ namespace Msg.User {
         output.WriteRawTag(26);
         output.WriteString(AvatarUrl);
       }
-      if (Level != 0) {
+      if (Record != 0) {
         output.WriteRawTag(32);
-        output.WriteInt32(Level);
+        output.WriteInt32(Record);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -800,8 +800,8 @@ namespace Msg.User {
       if (AvatarUrl.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(AvatarUrl);
       }
-      if (Level != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Level);
+      if (Record != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Record);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -824,8 +824,8 @@ namespace Msg.User {
       if (other.AvatarUrl.Length != 0) {
         AvatarUrl = other.AvatarUrl;
       }
-      if (other.Level != 0) {
-        Level = other.Level;
+      if (other.Record != 0) {
+        Record = other.Record;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -859,7 +859,7 @@ namespace Msg.User {
             break;
           }
           case 32: {
-            Level = input.ReadInt32();
+            Record = input.ReadInt32();
             break;
           }
         }
@@ -894,7 +894,7 @@ namespace Msg.User {
             break;
           }
           case 32: {
-            Level = input.ReadInt32();
+            Record = input.ReadInt32();
             break;
           }
         }

@@ -1,4 +1,5 @@
-﻿using WeChatWASM;
+﻿#if !UNITY_EDITOR && WEIXINMINIGAME
+using WeChatWASM;
 
 namespace Assets.Scripts.Platform
 {
@@ -44,8 +45,9 @@ namespace Assets.Scripts.Platform
             }
         }
 
-        public void Show()
+        public void Show(ExpoOptions options)
         {
+            Initialize(options);
             if (_video != null)
             {
                 _video.OnClose(OnCloseCB);
@@ -95,3 +97,4 @@ namespace Assets.Scripts.Platform
     }
 
 }
+#endif

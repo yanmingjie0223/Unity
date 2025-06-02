@@ -1,3 +1,4 @@
+using Assets.Scripts.Platform;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -15,6 +16,12 @@ public class Game : MonoBehaviour
         StageManager.GetInstance().Initialize();
         LayerManager.GetInstance().Initialize();
         LoadManager.GetInstance().Initialize();
+
+        PlatformType type = PlatformType.H5;
+#if !UNITY_EDITOR && WEIXINMINIGAME
+        type = PlatformType.WX;
+#endif
+        PlatformSDK.GetInstance().Initialize(type);
 
         var playMode = PathUtils.GetPlayMode();
         LoadManager.GetInstance().LoadPackage(

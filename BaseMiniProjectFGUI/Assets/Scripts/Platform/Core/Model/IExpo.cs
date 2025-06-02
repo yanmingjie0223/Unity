@@ -35,7 +35,7 @@ namespace Assets.Scripts.Platform
         /// <summary>
         /// 展示广告
         /// </summary>
-        void Show();
+        void Show(ExpoOptions options);
 
         /// <summary>
         /// 销毁

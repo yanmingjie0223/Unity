@@ -1,5 +1,5 @@
+using Assets.Scripts.Platform;
 using FairyGUI;
-using UnityEngine;
 
 public class MainView : BaseView
 {
@@ -33,14 +33,14 @@ public class MainView : BaseView
     private void OnClickBtn(EventContext ec)
     {
         var sender = ec.sender as GButton;
-        var wxOpenContext = WxOpenContext.GetInstance();
+        var wxOpenContext = PlatformSDK.GetInstance().GetOpenContext();
         if (sender == _btnStart)
         {
-            wxOpenContext.ShowOpenData();
+            wxOpenContext.Show();
         }
         else if (sender == _btnClose)
         {
-            wxOpenContext.HideOpenData();
+            wxOpenContext.Hide();
         }
         else if (sender == _btnFriend)
         {

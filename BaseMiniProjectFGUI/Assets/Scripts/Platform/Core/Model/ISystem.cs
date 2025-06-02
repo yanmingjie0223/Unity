@@ -27,6 +27,13 @@ namespace Assets.Scripts.Platform
         void InitUserInfo(Action<UserBody> completeCB, Action<string> errorCB);
 
         /// <summary>
+        /// 尝试获取用户信息
+        /// </summary>
+        /// <param name="completeCB"></param>
+        /// <param name="errorCB"></param>
+        void TryGetUserInfo(Action<UserBody> completeCB, Action<string> errorCB);
+
+        /// <summary>
 		/// 退出游戏
 		/// </summary>
         void Exit();
@@ -40,6 +47,11 @@ namespace Assets.Scripts.Platform
         /// 手机震动
         /// </summary>
         void VibrateShort();
+
+        /// <summary>
+        /// 手机长时间震动
+        /// </summary>
+        void VibrateLong();
 
         /// <summary>
         /// 检测运行版本是或者更高

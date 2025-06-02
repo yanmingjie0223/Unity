@@ -26,6 +26,11 @@ namespace Assets.Scripts.Platform
             completeCB?.Invoke(new());
         }
 
+        public void TryGetUserInfo(Action<UserBody> completeCB, Action<string> errorCB)
+        {
+            completeCB?.Invoke(new());
+        }
+
         public void Exit()
         {
         }
@@ -43,6 +48,10 @@ namespace Assets.Scripts.Platform
         }
 
         public void VibrateShort()
+        {
+        }
+
+        public void VibrateLong()
         {
         }
 

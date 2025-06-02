@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Platform;
 using WeChatWASM;
 
 [System.Serializable]
@@ -25,7 +25,7 @@ public class UserData : Singleton<UserData>
             proto.Province = _userBodyInfo.province;
             proto.City = _userBodyInfo.city;
         }
-        WxOpenContext.GetInstance().SendUserData();
+        PlatformSDK.GetInstance().GetOpenContext().SendUserData();
     }
 
     public Msg.User.C2S_SaveData Serializable()
