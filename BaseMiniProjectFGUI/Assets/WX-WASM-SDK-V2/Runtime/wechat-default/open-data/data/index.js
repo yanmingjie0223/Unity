@@ -27,7 +27,7 @@ function getWxGameData(item) {
     catch (e) {
         source = {
             wxgame: {
-                score: 0,
+                record: 0,
                 update_time: getCurrTime(),
             },
         };
@@ -41,8 +41,8 @@ function rankDataFilter(res, selfUserInfo = false) {
     const data = (res.data || []).filter((item) => item.KVDataList && item.KVDataList.length);
     return data
         .map((item) => {
-        const { score, update_time: updateTime } = getWxGameData(item);
-        item.score = score;
+        const { record, update_time: updateTime } = getWxGameData(item);
+        item.record = record;
         item.update_time = updateTime;
         /**
          * 请注意，这里判断是否为自己并不算特别严谨的做法
@@ -54,7 +54,7 @@ function rankDataFilter(res, selfUserInfo = false) {
         return item;
     })
         // 升序排序
-        .sort((a, b) => b.score - a.score);
+        .sort((a, b) => b.record - a.record);
 }
 /**
  * 获取好友排行榜列表
@@ -96,20 +96,20 @@ export function getGroupFriendsRankData(shareTicket, key, needMarkSelf = true) {
  * 但排行榜支持展示在游戏中心，因此这里统一用游戏中心需要的数据结构执行上报，需要展示在游戏中心的数据可以经过以下操作：
  * mp.weixin.qq.com 的小游戏管理后台“设置 - 游戏 - 排行榜设置”下配置对应的 key 以及相关排行榜属性。
  * @param { String } key   排行榜对应的 key
- * @param { Number } score 排行榜对应的分数
+ * @param { Number } record 排行榜对应的分数
  * @param { Object } extra 除了分数还需要写入的其他字段，不需要不填即可
  * @example
  * setUserRecord('user_rank', 100, { type: 'coin' })
  */
-export function setUserRecord(key, score = 0, extra = {}) {
-    console.log('[WX OpenData] setUserRecord: ', score);
+export function setUserRecord(key, record = 0, extra = {}) {
+    console.log('[WX OpenData] setUserRecord: ', record);
     return setUserCloudStorage({
         KVDataList: [
             {
                 key,
                 value: JSON.stringify({
                     wxgame: {
-                        score,
+                        record,
                         // 时间单位：秒
                         update_time: getCurrTime(),
                     },

@@ -44,8 +44,14 @@ public class UserData : Singleton<UserData>
         return 0;
     }
 
-    public void SetWxUserInfo(UserInfo userInfo)
+    public int GetRecord()
     {
+        return GetLevel();
+    }
+
+    public void SetUserBodyInfo(UserInfo userInfo)
+    {
+        _dirty = true;
         _userBodyInfo = userInfo;
         if (proto != null)
         {
@@ -56,7 +62,7 @@ public class UserData : Singleton<UserData>
         }
     }
 
-    public UserInfo GetWxUserInfo()
+    public UserInfo GetUserBodyInfo()
     {
         return _userBodyInfo;
     }

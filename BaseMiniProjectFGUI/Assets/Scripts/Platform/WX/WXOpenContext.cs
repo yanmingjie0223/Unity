@@ -119,7 +119,7 @@ namespace Assets.Scripts.Platform
             var message = new WxMessageUserData
             {
                 type = "setUserData",
-                record = userData.GetCurLevel(),
+                record = userData.GetRecord(),
                 avatarUrl = wxUserInfo != null ? wxUserInfo.avatarUrl : "",
                 nickname = wxUserInfo != null ? wxUserInfo.nickName : "",
                 version = GameConfig.rankVersion,

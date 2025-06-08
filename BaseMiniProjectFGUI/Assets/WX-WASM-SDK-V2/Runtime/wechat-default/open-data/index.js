@@ -138,7 +138,7 @@ function main() {
                 renderGroupFriendsRank(data.shareTicket);
                 break;
             case MessageType.SET_USER_RECORD:
-                setUserRecord(RANK_KEY, data.score);
+                setUserRecord(RANK_KEY, data.record);
                 break;
             default:
                 console.error(`[WX OpenData] onMessage type 「${data.type}」 is not supported`);

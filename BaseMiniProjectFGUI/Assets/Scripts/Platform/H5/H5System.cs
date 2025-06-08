@@ -64,6 +64,14 @@ namespace Assets.Scripts.Platform
         {
         }
 
+        public void ShareAppMessage(string imageUrl, string title, string query)
+        {
+        }
+
+        public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query)
+        {
+        }
+
     }
 
 }

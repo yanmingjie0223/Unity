@@ -79,6 +79,25 @@ namespace Assets.Scripts.Platform
         /// <param name="query"></param>
         void SetShareMessage(string imageUrl, string title, string query);
 
+        /// <summary>
+        /// 分享应用信息
+        /// </summary>
+        /// <param name="imageUrl"></param>
+        /// <param name="title"></param>
+        /// <param name="query"></param>
+        void ShareAppMessage(string imageUrl, string title, string query);
+
+        /// <summary>
+        /// 分享截图信息
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="title"></param>
+        /// <param name="query"></param>
+        void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query);
+
     }
 
 }

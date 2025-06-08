@@ -186,6 +186,37 @@ namespace Assets.Scripts.Platform
             });
         }
 
+        public void ShareAppMessage(string imageUrl, string title, string query)
+        {
+            WX.ShareAppMessage(new ShareAppMessageOption()
+            {
+                title = title,
+                imageUrl = imageUrl,
+                query = query
+            });
+        }
+
+        public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query)
+        {
+            int ShareWidth = width;
+            int ShareHeight = height;
+            var tf = WXCanvas.ToTempFilePathSync(new WXToTempFilePathParam()
+            {
+                x = x,
+                y = y,
+                width = ShareWidth,
+                height = ShareHeight,
+                destWidth = ShareWidth,
+                destHeight = ShareHeight,
+            });
+            WX.ShareAppMessage(new ShareAppMessageOption()
+            {
+                title = title,
+                imageUrl = tf,
+                query = query
+            });
+        }
+
         private void GetUserInfo(Action<UserBody> completeCB, Action<string> errorCB)
         {
             WX.GetSetting(new GetSettingOption()
