@@ -46,7 +46,7 @@ namespace Assets.Scripts.Platform
         /// <summary>
         /// 手机震动
         /// </summary>
-        void VibrateShort();
+        void VibrateShort(VibrateType vibrateType = VibrateType.Light);
 
         /// <summary>
         /// 手机长时间震动

@@ -120,9 +120,23 @@ namespace Assets.Scripts.Platform
             WX.RestartMiniProgram(null);
         }
 
-        public void VibrateShort()
+        public void VibrateShort(VibrateType vibrateType = VibrateType.Light)
         {
-            WX.VibrateShort(new VibrateShortOption() { type = "medium" });
+            switch (vibrateType)
+            {
+                case VibrateType.Light:
+                    WX.VibrateShort(new VibrateShortOption() { type = "light" });
+                    break;
+                case VibrateType.Medium:
+                    WX.VibrateShort(new VibrateShortOption() { type = "medium" });
+                    break;  
+                case VibrateType.Heavy:
+                    WX.VibrateShort(new VibrateShortOption() { type = "heavy" });
+                    break;
+                default:
+                    WX.VibrateShort(new VibrateShortOption() { type = "light" });
+                    break;
+            }
         }
 
         public void VibrateLong()

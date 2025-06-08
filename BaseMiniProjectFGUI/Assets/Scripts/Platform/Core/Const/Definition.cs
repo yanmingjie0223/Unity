@@ -15,6 +15,22 @@ namespace Assets.Scripts.Platform
         WX,
     }
 
+    public enum VibrateType
+    {
+        /// <summary>
+        /// 轻微震动
+        /// </summary>
+        Light = 0,
+        /// <summary>
+        /// 中等震动
+        /// </summary>
+        Medium = 1,
+        /// <summary>
+        /// 重度震动
+        /// </summary>
+        Heavy = 2,
+    }
+
     public class UserBody
     {
         public string nickName = "";

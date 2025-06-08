@@ -47,7 +47,7 @@ namespace Assets.Scripts.Platform
         {
         }
 
-        public void VibrateShort()
+        public void VibrateShort(VibrateType vibrateType = VibrateType.Light)
         {
         }
 
