@@ -174,14 +174,14 @@ namespace Assets.Scripts.Platform
                 }
                 if (curVer > ver)
                 {
-                    return false;
+                    return true;
                 }
                 else if (curVer < ver)
                 {
-                    return true;
+                    return false;
                 }
             }
-            return true;
+            return false;
         }
 
         public void SetShareMessage(string imageUrl, string title, string query)

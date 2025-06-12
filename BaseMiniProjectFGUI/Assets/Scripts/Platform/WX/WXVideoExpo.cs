@@ -36,10 +36,7 @@ namespace Assets.Scripts.Platform
             {
                 _video.OffClose(OnCloseCB);
                 _video.OffError(OnErrorCB);
-                if (PlatformSDK.GetInstance().GetSystem().CheckRunVersionIsOrHigher("2.8.0"))
-                {
-                    _video.Destroy();
-                }
+                _video.OffLoad(OnLoadCB);
                 _video = null;
                 _options = null;
             }
@@ -82,6 +79,7 @@ namespace Assets.Scripts.Platform
             }
 
             _options.OnClose?.Invoke(res.isEnded);
+            Destroy();
         }
 
         private void OnErrorCB(WXADErrorResponse res)
