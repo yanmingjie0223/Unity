@@ -9,26 +9,25 @@ public class PathUtils
     public static string GetHostServerURL()
     {
         string hostServerIP = GetHostServer(); ;
-        string appVersion = "v1.0";
 
 #if UNITY_EDITOR
         if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.Android)
-            return $"{hostServerIP}/CDN/Android/{appVersion}";
+            return $"{hostServerIP}/CDN/Android/{GameConfig.appVersion}";
         else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.iOS)
-            return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+            return $"{hostServerIP}/CDN/IPhone/{GameConfig.appVersion}";
         else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL)
-            return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+            return $"{hostServerIP}/CDN/WebGL/{GameConfig.appVersion}";
         else
-            return $"{hostServerIP}/CDN/PC/{appVersion}";
+            return $"{hostServerIP}/CDN/PC/{GameConfig.appVersion}";
 #else
         if (Application.platform == RuntimePlatform.Android)
-            return $"{hostServerIP}/CDN/Android/{appVersion}";
+            return $"{hostServerIP}/CDN/Android/{GameConfig.appVersion}";
         else if (Application.platform == RuntimePlatform.IPhonePlayer)
-            return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+            return $"{hostServerIP}/CDN/IPhone/{GameConfig.appVersion}";
         else if (Application.platform == RuntimePlatform.WebGLPlayer)
-            return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+            return $"{hostServerIP}/CDN/WebGL/{GameConfig.appVersion}";
         else
-            return $"{hostServerIP}/CDN/PC/{appVersion}";
+            return $"{hostServerIP}/CDN/PC/{GameConfig.appVersion}";
 #endif
 
     }

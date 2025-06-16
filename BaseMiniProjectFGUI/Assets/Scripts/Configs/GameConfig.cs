@@ -1,4 +1,4 @@
-﻿public class GameConfig
+public class GameConfig
 {
 
     /// <summary>
@@ -13,6 +13,10 @@
 #else
     public static ServerType serverType = ServerType.Web;
 #endif
+    /// <summary>
+    /// app版本号
+    /// </summary>
+    public static readonly string appVersion = "v0.16";
     /// <summary>
     /// 排行榜版本，用来清空排行榜
     /// </summary>
@@ -34,7 +38,7 @@
     /// <summary>
     /// cdn跟地址
     /// </summary>
-    public static readonly string cdnRoot = "https://baseprojectmini-1259097372.cos-website.ap-nanjing.myqcloud.com/BaseProjectMini";
+    public static readonly string cdnRoot = "";
     /// <summary>
     /// 分享地址
     /// </summary>

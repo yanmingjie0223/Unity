@@ -15,11 +15,11 @@ MonoBehaviour:
   ProjectConf:
     projectName: BaseProjectMini
     Appid: wx85d125798a4e2b0a
-    CDN: https://baseprojectmini-1259097372.cos-website.ap-nanjing.myqcloud.com/BaseProjectMini/
+    CDN: 
     assetLoadType: 0
     compressDataPackage: 1
     VideoUrl: 
-    DST: D:\Files\Git\Unity\BaseMiniProjectFGUI\Release
+    DST: Release
     StreamCDN: 
     bundleHashLength: 32
     bundlePathIdentifier: StreamingAssets;
