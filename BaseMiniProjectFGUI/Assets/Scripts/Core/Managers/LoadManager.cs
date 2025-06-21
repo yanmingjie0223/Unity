@@ -1,10 +1,15 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using YooAsset;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 public class LoadManager : SingletonDontDestroyMono<LoadManager>
 {
+
+    public readonly Dictionary<string, AssetHandle> resDic = new();
+    public readonly Dictionary<string, Dictionary<string, AssetHandle>> groupResDic = new();
 
     public void Initialize()
     {
@@ -14,6 +19,31 @@ public class LoadManager : SingletonDontDestroyMono<LoadManager>
     public void Load(string pkgName, string resName, Action<string> start, Action<float> progress, Action<bool, Object> end)
     {
         StartCoroutine(LoadRes(pkgName, resName, start, progress, end));
+    }
+
+    public T LoadSync<T>(string pkgName, GroupType groupType, string resName) where T : Object
+    {
+        resDic.TryGetValue(resName, out AssetHandle handler);
+        if (handler != null)
+        {
+            return handler.AssetObject as T;
+        }
+
+        var package = YooAssets.TryGetPackage(pkgName);
+        if (package == null)
+        {
+            Debug.LogError("not download package!");
+        }
+
+        string groupName = PathUtils.GetGroupName(groupType);
+        string resKey = $"{groupName}_{resName}";
+        handler = package.LoadAssetSync(resKey);
+        if (!resDic.ContainsKey(resKey))
+        {
+            resDic.Add(resKey, handler);
+        }
+
+        return handler.AssetObject as T;
     }
 
     public void LoadGroup(string pkgName, GroupType groupType, Action<string> start, Action<float> progress, Action<bool> end)
@@ -37,17 +67,30 @@ public class LoadManager : SingletonDontDestroyMono<LoadManager>
         }
         else
         {
-            var handler = package.LoadAssetAsync(resName);
-            progress?.Invoke(handler.Progress);
-            yield return handler;
-
-            if (handler.Status != EOperationStatus.Succeed)
+            resDic.TryGetValue(resName, out AssetHandle handler);
+            if (handler != null)
             {
                 end?.Invoke(true, handler.AssetObject);
             }
             else
             {
-                end?.Invoke(false, null);
+                handler = package.LoadAssetAsync(resName);
+                progress?.Invoke(handler.Progress);
+                yield return handler;
+
+                if (handler.Status != EOperationStatus.Succeed)
+                {
+                    if (!resDic.ContainsKey(resName))
+                    {
+                        resDic.Add(resName, handler);
+                    }
+                    end?.Invoke(true, handler.AssetObject);
+                }
+                else
+                {
+                    handler.Release();
+                    end?.Invoke(false, null);
+                }
             }
         }
     }
@@ -62,6 +105,12 @@ public class LoadManager : SingletonDontDestroyMono<LoadManager>
         }
         else
         {
+            groupResDic.TryGetValue(groupName, out Dictionary<string, AssetHandle> curResDic);
+            if (curResDic == null)
+            {
+                curResDic = new();
+                groupResDic.Add(groupName, curResDic);
+            }
             // 这里需要后面优化，多文件加载
             AssetInfo[] assetInfos = package.GetAssetInfos(groupName);
             int maxCount = assetInfos.Length;
@@ -69,22 +118,39 @@ public class LoadManager : SingletonDontDestroyMono<LoadManager>
             for (int i = 0; i < maxCount; i++)
             {
                 var assetInfo = assetInfos[i];
-                var handler = package.LoadAssetAsync(assetInfo.Address);
-                yield return handler;
-                var status = handler.Status;
-                handler.Release();
-                if (status != EOperationStatus.Succeed)
-                {
-                    end?.Invoke(true);
-                    break;
-                }
-                else
+                curResDic.TryGetValue(assetInfo.Address, out AssetHandle handler);
+                if (handler != null)
                 {
                     ++count;
                     progress?.Invoke((float)count / maxCount);
                     if (count >= maxCount)
                     {
                         end?.Invoke(false);
+                    }
+                }
+                else
+                {
+                    handler = package.LoadAssetAsync(assetInfo.Address);
+                    yield return handler;
+                    var status = handler.Status;
+                    if (status != EOperationStatus.Succeed)
+                    {
+                        handler.Release();
+                        end?.Invoke(true);
+                        break;
+                    }
+                    else
+                    {
+                        if (!curResDic.ContainsKey(assetInfo.Address))
+                        {
+                            curResDic.Add(assetInfo.Address, handler);
+                        }
+                        ++count;
+                        progress?.Invoke((float)count / maxCount);
+                        if (count >= maxCount)
+                        {
+                            end?.Invoke(false);
+                        }
                     }
                 }
             }
