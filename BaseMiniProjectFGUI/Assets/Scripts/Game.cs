@@ -12,16 +12,11 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        PlatformSDK.GetInstance().Initialize();
         FguiManager.GetInstance().Initialize();
         StageManager.GetInstance().Initialize();
         LayerManager.GetInstance().Initialize();
         LoadManager.GetInstance().Initialize();
-
-        PlatformType type = PlatformType.H5;
-#if !UNITY_EDITOR && WEIXINMINIGAME
-        type = PlatformType.WX;
-#endif
-        PlatformSDK.GetInstance().Initialize(type);
 
         var playMode = PathUtils.GetPlayMode();
         LoadManager.GetInstance().LoadPackage(

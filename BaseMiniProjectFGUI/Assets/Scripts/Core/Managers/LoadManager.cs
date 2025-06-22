@@ -205,6 +205,10 @@ public class LoadManager : SingletonDontDestroyMono<LoadManager>
             // 注意：如果有子目录，请修改此处！
             string packageRoot = $"{WeChatWASM.WX.env.USER_DATA_PATH}/__GAME_FILE_CACHE";
             initParameters.WebServerFileSystemParameters = WechatFileSystemCreater.CreateFileSystemParameters(packageRoot, remoteServices, decryptionServices);
+#elif DOUYINMINIGAME
+            string packageRoot = $"{GameConfig.cdnRoot}";
+            // 创建初始化参数
+            initParameters.WebServerFileSystemParameters = TiktokFileSystemCreater.CreateFileSystemParameters(packageRoot, remoteServices, decryptionServices);
 #endif
             initializationOperation = package.InitializeAsync(initParameters);
         }

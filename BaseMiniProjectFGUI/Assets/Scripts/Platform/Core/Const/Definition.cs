@@ -12,7 +12,14 @@ namespace Assets.Scripts.Platform
     public enum PlatformType
     {
         H5 = 0,
+        /// <summary>
+        /// 微信小游戏
+        /// </summary>
         WX,
+        /// <summary>
+        /// 抖音小游戏
+        /// </summary>
+        DY
     }
 
     public enum VibrateType

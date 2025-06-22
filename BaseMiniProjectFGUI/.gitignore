@@ -3,6 +3,7 @@ Temp/
 Logs/
 MemoryCaptures/
 obj/
+Build/
 *_Build/
 *.csproj
 *.sln

@@ -134,8 +134,8 @@ public class ReferenceFinderWindow : EditorWindow
 
     private void OnEnable()
     {
-        isDepend = PlayerPrefs.GetInt(isDependPrefKey, 0) == 1;
-        needUpdateState = PlayerPrefs.GetInt(needUpdateStatePrefKey, 1) == 1;
+        isDepend = UnityEngine.PlayerPrefs.GetInt(isDependPrefKey, 0) == 1;
+        needUpdateState = UnityEngine.PlayerPrefs.GetInt(needUpdateStatePrefKey, 1) == 1;
     }
 
     private void OnGUI()
@@ -172,7 +172,7 @@ public class ReferenceFinderWindow : EditorWindow
         needUpdateState = GUILayout.Toggle(needUpdateState, "Need Update State", toolbarButtonGUIStyle);
         if (PreNeedUpdateState != needUpdateState)
         {
-            PlayerPrefs.SetInt(needUpdateStatePrefKey, needUpdateState ? 1 : 0);
+            UnityEngine.PlayerPrefs.SetInt(needUpdateStatePrefKey, needUpdateState ? 1 : 0);
         }
         GUILayout.FlexibleSpace();
 
@@ -192,7 +192,7 @@ public class ReferenceFinderWindow : EditorWindow
     private void OnModelSelect()
     {
         needUpdateAssetTree = true;
-        PlayerPrefs.SetInt(isDependPrefKey, isDepend ? 1 : 0);
+        UnityEngine.PlayerPrefs.SetInt(isDependPrefKey, isDepend ? 1 : 0);
     }
 
 

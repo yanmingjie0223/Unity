@@ -16,7 +16,7 @@ public class GameConfig
     /// <summary>
     /// app版本号
     /// </summary>
-    public static readonly string appVersion = "v0.16";
+    public static readonly string appVersion = "v0.1";
     /// <summary>
     /// 排行榜版本，用来清空排行榜
     /// </summary>

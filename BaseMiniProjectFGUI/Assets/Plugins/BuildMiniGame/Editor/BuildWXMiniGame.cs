@@ -15,27 +15,39 @@ using System.Collections;
 
 public class WeChatMiniGameBuilder : EditorWindow
 {
+    // 平台枚举
+    private enum BuildPlatform
+    {
+        WeChat,
+        DouYin
+    }
+
     private const string BuildVersionKey = "WeChatMiniGameBuilder_BuildVersion";
+    private const string BuildPlatformKey = "WeChatMiniGameBuilder_BuildPlatform";
     private const string BundlesFolder = "Bundles";
     private const string ReleaseFolder = "Release";
 
     private string buildVersion = "";
+    private BuildPlatform buildPlatform = BuildPlatform.WeChat;
 
-    [MenuItem("Tools/一键微信小游戏打包")]
+    [MenuItem("Tools/一键小游戏打包")]
     public static void ShowWindow()
     {
-        GetWindow<WeChatMiniGameBuilder>("微信小游戏打包");
+        GetWindow<WeChatMiniGameBuilder>("小游戏打包");
     }
 
     private void OnEnable()
     {
         // 加载保存的版本号
         buildVersion = EditorPrefs.GetString(BuildVersionKey, "v0.1");
+        // 加载保存的平台选择
+        buildPlatform = (BuildPlatform)EditorPrefs.GetInt(BuildPlatformKey, (int)BuildPlatform.WeChat);
     }
 
     private void OnGUI()
     {
         buildVersion = EditorGUILayout.TextField("构建版本:", buildVersion);
+        buildPlatform = (BuildPlatform)EditorGUILayout.EnumPopup("平台:", buildPlatform);
 
         EditorGUILayout.Space();
 
@@ -44,19 +56,48 @@ public class WeChatMiniGameBuilder : EditorWindow
             Build();
         }
 
-        EditorGUILayout.HelpBox("请确保已安装:\n1. YooAsset最新版本\n2. 微信小游戏转换插件", MessageType.Info);
+        EditorGUILayout.HelpBox("请确保已安装:\n1. YooAsset最新版本\n2. 微信小游戏或者抖音小游戏转换插件", MessageType.Info);
     }
 
     private void Build()
     {
         try
         {
+            EditorUserBuildSettings.SwitchActiveBuildTarget(
+                BuildTargetGroup.WebGL,
+                BuildTarget.WebGL
+            );
             // 保存当前版本号
             EditorPrefs.SetString(BuildVersionKey, buildVersion);
+            EditorPrefs.SetInt(BuildPlatformKey, (int)buildPlatform);
             // 构建更换版本
             BuildChangeVersion();
-            // 延迟打包
-            EditorCoroutineUtility.StartCoroutineOwnerless(DelayedBuild());
+            // 更换打包条件
+            if (buildPlatform == BuildPlatform.WeChat)
+            {
+                PlayerSettings.WebGL.template = "PROJECT:WXTemplate2022";
+                SetScriptingDefines(new string[] { "WEIXINMINIGAME" });
+            }
+            else if (buildPlatform == BuildPlatform.DouYin)
+            {
+                PlayerSettings.WebGL.template = "APPLICATION:Default";
+                SetScriptingDefines(new string[] { "DOUYINMINIGAME" });
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("错误", "未知平台选择", "确定");
+                return;
+            }
+            // 强制应用设置并等待修改生效
+            AssetDatabase.Refresh();
+            EditorApplication.delayCall += () =>
+            {
+                // 确保所有修改已提交
+                AssetDatabase.SaveAssets();
+
+                // 延迟打包（等待编译完成）
+                EditorCoroutineUtility.StartCoroutineOwnerless(DelayedBuild());
+            };
         }
         catch (System.Exception e)
         {
@@ -87,17 +128,33 @@ public class WeChatMiniGameBuilder : EditorWindow
         if (Directory.Exists(releasePath))
         {
             Directory.Delete(releasePath, true);
+            Directory.CreateDirectory(releasePath);
             Debug.Log($"已清理文件夹: {releasePath}");
         }
         yield return new EditorWaitForSeconds(3f);
-        // 构建微信小游戏
-        if (!BuildWeChatMiniGame())
+        // 保存平台选择
+        if (buildPlatform == BuildPlatform.WeChat)
         {
-            EditorUtility.DisplayDialog("错误", "微信小游戏构建失败", "确定");
-            yield break;
+            if (!BuildWeChatMiniGame())
+            {
+                EditorUtility.DisplayDialog("错误", "微信小游戏构建失败", "确定");
+                yield break;
+            }
+        }
+        else if (buildPlatform == BuildPlatform.DouYin)
+        {
+            if (!BuildDouYinMiniGame())
+            {
+                EditorUtility.DisplayDialog("错误", "抖音小游戏构建失败", "确定");
+                yield break;
+            }
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("错误", "未知平台选择", "确定");
         }
 
-        BuildWechatMiniGameFinishBat();
+        BuildMiniGameFinishBat();
     }
 
     private void BuildChangeVersion()
@@ -198,10 +255,50 @@ public class WeChatMiniGameBuilder : EditorWindow
         }
     }
 
-    private void BuildWechatMiniGameFinishBat()
+    private bool BuildDouYinMiniGame()
+    {
+        Debug.Log("开始转换为抖音小游戏格式");
+        try
+        {
+            string outputPath = TTSDK.Tool.Builder.GetOutputPackagePath();
+            var settings = TTSDK.Tool.StarkBuilderSettings.Instance;
+            bool isSucceed = TTSDK.Tool.Builder.BuildWebGL(settings, outputPath, out bool isCancel);
+            if (isSucceed)
+            {
+                Debug.Log("抖音小游戏转换成功");
+                return true;
+            }
+            else
+            {
+                Debug.LogError("抖音小游戏转换失败");
+                return false;
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("抖音小游戏转换失败: " + e.Message);
+            return false;
+        }
+    }
+
+    private void BuildMiniGameFinishBat()
     {
         // 获取相对路径
-        string relativePath = "../build_minigame.bat"; // 相对于Assets文件夹的路径
+        string relativePath;
+        if (buildPlatform == BuildPlatform.WeChat)
+        {
+            relativePath = "../build_wx_minigame.bat";
+        }
+        else if (buildPlatform == BuildPlatform.DouYin)
+        {
+            relativePath = "../build_dy_minigame.bat";
+        }
+        else
+        {
+            Debug.LogError("未知平台，无法执行批处理文件");
+            return;
+        }
+
         string batFilePath = Path.Combine(Application.dataPath, relativePath);
 
         // 检查文件是否存在
@@ -212,7 +309,7 @@ public class WeChatMiniGameBuilder : EditorWindow
         }
 
         // 创建进程启动信息
-        ProcessStartInfo processStartInfo = new ProcessStartInfo(batFilePath)
+        ProcessStartInfo processStartInfo = new(batFilePath)
         {
             UseShellExecute = false,
             RedirectStandardOutput = true,
@@ -221,7 +318,7 @@ public class WeChatMiniGameBuilder : EditorWindow
         };
 
         // 启动进程
-        using (Process process = new Process())
+        using (Process process = new())
         {
             process.StartInfo = processStartInfo;
             process.Start();
@@ -239,6 +336,16 @@ public class WeChatMiniGameBuilder : EditorWindow
                 Debug.Log("Output: " + output);
             }
         }
+    }
+
+    private static void SetScriptingDefines(string[] defines)
+    {
+        // 设置新宏定义
+        string newDefines = string.Join(";", defines);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(
+            BuildTargetGroup.WebGL,
+            newDefines
+        );
     }
 
 }

@@ -1,0 +1,23 @@
+{
+  "appid": "tt9991ef2c069845ca07",
+  "projectname": "BaseMiniProjectFGUI",
+  "unity": {
+    "build": {
+      "webgl": "D:\\Files\\Git\\Unity\\BaseMiniProjectFGUI\\Release\\webgl_package-20250623_001535.zip",
+      "native": {
+        "il2cpp": "",
+        "apk": "",
+        "fullApk": ""
+      },
+      "instantGame": ""
+    },
+    "publishType": "2",
+    "starkSdkVersion": "Without StarkSDK",
+    "unityToolsVersion": null,
+    "unityEngineVersion": "2022.3.30f1c1",
+    "arch": "both"
+  },
+  "setting": {
+    "urlCheck": false
+  }
+}

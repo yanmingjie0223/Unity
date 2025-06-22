@@ -22,10 +22,23 @@ namespace Assets.Scripts.Platform
         /// 本地存储
         /// </summary>
         private IStorage _localStorage;
+        /// <summary>
+        /// 平台类型
+        /// </summary>
+        private PlatformType _type;
 
-        public void Initialize(PlatformType type)
+        public void Initialize()
         {
-            switch (type)
+
+#if !UNITY_EDITOR && WEIXINMINIGAME
+            _type = PlatformType.WX;
+#elif !UNITY_EDITOR && DOUYINMINIGAME
+            _type = PlatformType.DY;
+#else
+            _type = PlatformType.H5;
+#endif
+
+            switch (_type)
             {
                 case PlatformType.H5:
                     _videoExpo = new H5VideoExpo();
@@ -42,7 +55,7 @@ namespace Assets.Scripts.Platform
 #endif
                     break;
                 default:
-                    Debug.LogError($"Unprocessed PlatformType: {type}");
+                    Debug.LogError($"Unprocessed PlatformType: {_type}");
                     break;
             }
         }
@@ -65,6 +78,11 @@ namespace Assets.Scripts.Platform
         public IStorage GetLocalStorage()
         {
             return _localStorage;
+        }
+
+        public PlatformType GetPlatformType()
+        {
+            return _type;
         }
 
     }
