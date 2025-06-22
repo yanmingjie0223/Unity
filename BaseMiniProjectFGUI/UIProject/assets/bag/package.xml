@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="78yhsqhi">
+  <resources>
+    <image id="kvod0" name="avatar.jpg" path="/image/"/>
+    <component id="kvod1" name="BagView.xml" path="/" exported="true"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

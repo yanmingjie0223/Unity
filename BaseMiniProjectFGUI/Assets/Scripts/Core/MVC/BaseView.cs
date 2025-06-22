@@ -1,14 +1,15 @@
 ﻿using FairyGUI;
 using System.Collections.Generic;
 using UnityEngine;
+using YooAsset;
 
 public class BaseView : BComponent
 {
+    private readonly List<string> _pkgNames;
+    private readonly ViewType _viewType;
+    private readonly AreaType _areaType;
     private string _pkgName;
-    private List<string> _pkgNames;
     private string _resName;
-    private ViewType _viewType;
-    private AreaType _areaType;
     private string _viewLayerType;
 
     private BaseModel _model;
@@ -35,39 +36,39 @@ public class BaseView : BComponent
         _showStatus = ViewStatus.CLOSE;
     }
 
-    public IBaseViewData viewData
+    public IBaseViewData ViewData
     {
         set { _viewData = value; }
         get { return _viewData; }
     }
 
-    public BaseModel model
+    public BaseModel Model
     {
         set
         {
             _model = value;
             if (_ctrl != null)
             {
-                _ctrl.model = value;
+                _ctrl.Model = value;
             }
         }
         get { return _model; }
     }
 
-    public BaseCtrl ctrl
+    public BaseCtrl Ctrl
     {
         set
         {
             _ctrl = value;
             if (_ctrl != null)
             {
-                _ctrl.view = this;
+                _ctrl.View = this;
             }
         }
         get { return _ctrl; }
     }
 
-    public GComponent contentPane
+    public GComponent ContentPane
     {
         set
         {
@@ -80,20 +81,20 @@ public class BaseView : BComponent
         get { return _contentPane; }
     }
 
-    public string layer
+    public string Layer
     {
         set { _viewLayerType = value; }
         get { return _viewLayerType; }
     }
 
-    public ViewType viewType { get { return _viewType; } }
+    public ViewType ViewType { get { return _viewType; } }
 
-    public bool isDestroy
+    public bool IsDestroy
     {
         get { return displayObject == null; }
     }
 
-    public bool isInit
+    public bool IsInit
     {
         get { return _isInit; }
     }
@@ -121,7 +122,7 @@ public class BaseView : BComponent
     public int GetLayerIndex()
     {
         var layerManager = LayerManager.GetInstance();
-        var index = layerManager.GetLayerIndex(layer);
+        var index = layerManager.GetLayerIndex(Layer);
         if (displayObject != null)
         {
             var cIndx = displayObject.renderingOrder;
@@ -180,13 +181,24 @@ public class BaseView : BComponent
         _resName = null;
         _model = null;
         _showStatus = ViewStatus.CLOSE;
-        if (contentPane != null)
+        if (ContentPane != null)
         {
-            contentPane.Dispose();
-            contentPane = null;
+            ContentPane.Dispose();
+            ContentPane = null;
         }
         RemoveBgLoader();
         Dispose();
+        _pkgNames.ForEach(pkgName =>
+        {
+            ResourceConfig.groupData.TryGetValue(pkgName, out var curResList);
+            if (curResList != null)
+            {
+                for (int i = 0; i < curResList.Count; i++)
+                {
+                    ResManager.GetInstance().Release(GameConfig.yooPackageName, $"{GroupTypeName.UI}_{curResList[i]}");
+                }
+            }
+        });
     }
 
     public void Show()
@@ -301,15 +313,15 @@ public class BaseView : BComponent
         {
             UIPackage.AddPackage($"ui/{_pkgNames[i]}", OnLoadFun);
         }
-        contentPane = UIPackage.CreateObject(_pkgName, _resName).asCom;
-        if (contentPane == null)
+        ContentPane = UIPackage.CreateObject(_pkgName, _resName).asCom;
+        if (ContentPane == null)
         {
             Destroy();
             Debug.LogError("not found: " + _pkgName + "/" + _resName);
             return;
         }
 
-        displayObject.cachedTransform.name = $"{contentPane.displayObject.cachedTransform.name}_Container";
+        displayObject.cachedTransform.name = $"{ContentPane.displayObject.cachedTransform.name}_Container";
 
         OnPaneRelation();
         OnCompleteUI();
@@ -358,7 +370,20 @@ public class BaseView : BComponent
     private Object OnLoadFun(string name, string extension, System.Type type, out DestroyMethod destroyMethod)
     {
         destroyMethod = DestroyMethod.Unload;
-        var obj = ResManager.GetInstance().GetAssetSync(GameConfig.yooPackageName, GroupType.UI, name);
+        var package = YooAssets.TryGetPackage(GameConfig.yooPackageName);
+        if (package == null)
+        {
+            Debug.LogError("not download package!");
+            return null;
+        }
+
+        string[] resArr = name.Split("/");
+        if (resArr.Length <= 0)
+        {
+            return null;
+        }
+
+        var obj = ResManager.GetInstance().GetAssetSync<Object>(GameConfig.yooPackageName, GroupType.UI, resArr[^1]);
         return obj;
     }
 

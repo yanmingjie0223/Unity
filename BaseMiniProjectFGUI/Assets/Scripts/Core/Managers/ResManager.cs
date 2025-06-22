@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using YooAsset;
 using Object = UnityEngine.Object;
 
@@ -10,52 +9,6 @@ public class ResManager : Singleton<ResManager>
     public T GetAssetSync<T>(string pkgName, GroupType groupType, string resName) where T : Object
     {
         return LoadManager.GetInstance().LoadSync<T>(pkgName, groupType, resName);
-    }
-
-    public Object GetAssetSync(string pkgName, GroupType groupType, string resName)
-    {
-        var package = YooAssets.TryGetPackage(pkgName);
-        if (package == null)
-        {
-            Debug.LogError("not download package!");
-        }
-
-        string groupName = PathUtils.GetGroupName(groupType);
-        string[] resArr = resName.Split("/");
-        if (resArr.Length <= 0)
-        {
-            return null;
-        }
-
-        string rName = resArr[resArr.Length - 1];
-        var handler = package.LoadAssetSync($"{groupName}_{rName}");
-        var obj = handler.AssetObject;
-        handler.Release();
-
-        return obj;
-    }
-
-    public void GetAssetAsync<T>(
-        string pkgName,
-        GroupType groupType,
-        string resName,
-        Action<string> start,
-        Action<float> progress,
-        Action<bool, T> end
-    ) where T : Object
-    {
-        string groupName = PathUtils.GetGroupName(groupType);
-        LoadManager.GetInstance().Load(pkgName, $"{groupName}_{resName}", start, progress, (bool isError, Object assetObject) =>
-        {
-            if (!isError)
-            {
-                end?.Invoke(isError, assetObject as T);
-            }
-            else
-            {
-                end?.Invoke(isError, null);
-            }
-        });
     }
 
     public void GetResAssetAsync(
@@ -118,7 +71,7 @@ public class ResManager : Singleton<ResManager>
         }
     }
 
-    public void Release(string pkgName, string resName)
+    public void Release(string pkgName, string groupAndResName)
     {
         var package = YooAssets.TryGetPackage(pkgName);
         if (package == null)
@@ -127,32 +80,42 @@ public class ResManager : Singleton<ResManager>
         }
 
         var loadManager = LoadManager.GetInstance();
-        loadManager.resDic.TryGetValue(resName, out AssetHandle handle);
+        loadManager.resDic.TryGetValue(groupAndResName, out AssetHandle handle);
         if (handle != null)
         {
-            handle.Release();
-            package.TryUnloadUnusedAsset(resName);
-        }
-    }
-
-    public void Relase(string pkgName, string groupName, string resName)
-    {
-        var package = YooAssets.TryGetPackage(pkgName);
-        if (package == null)
-        {
-            return;
-        }
-
-        var loadManager = LoadManager.GetInstance();
-        loadManager.groupResDic.TryGetValue(groupName, out Dictionary<string, AssetHandle> curResDic);
-        if (curResDic != null)
-        {
-            string resKey = $"{groupName}_{resName}";
-            curResDic.TryGetValue(resKey, out AssetHandle handle);
-            if (handle != null)
+            // 检测是否有依赖关系，如果有依赖关系，则不释放资源
+            ResourceConfig.groupData.TryGetValue("relyon", out var relyonList);
+            if (relyonList != null)
             {
+                string resName = groupAndResName.Replace($"{GroupTypeName.UI}_", "");
+                if (relyonList.Contains(resName))
+                {
+                    return;
+                }
+            }
+            // 检测引用计数
+            // 当引用计数大于等于1时，减少引用计数
+            // 当引用计数为1或者小于1时，释放资源并尝试卸载未使用的资源
+            if (loadManager.referenceCountDic.TryGetValue(groupAndResName, out int refCount) && refCount >= 1)
+            {
+                if (refCount > 1)
+                {
+                    loadManager.referenceCountDic[groupAndResName] = refCount - 1;
+                }
+                else
+                {
+                    loadManager.referenceCountDic.Remove(groupAndResName);
+                    loadManager.resDic.Remove(groupAndResName);
+                    handle.Release();
+                    package.TryUnloadUnusedAsset(groupAndResName);
+                }
+            }
+            else
+            {
+                loadManager.referenceCountDic.Remove(groupAndResName);
+                loadManager.resDic.Remove(groupAndResName);
                 handle.Release();
-                package.TryUnloadUnusedAsset(resKey);
+                package.TryUnloadUnusedAsset(groupAndResName);
             }
         }
     }

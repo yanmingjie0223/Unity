@@ -19,7 +19,7 @@ public class LoadingView : BaseView
 
     protected override void OnInit()
     {
-        _progressLoad = contentPane.GetChild("progressLoad").asProgress;
+        _progressLoad = ContentPane.GetChild("progressLoad").asProgress;
     }
 
     protected override void OnShown()

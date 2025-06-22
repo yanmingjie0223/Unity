@@ -8,6 +8,7 @@ public class MainView : BaseView
     private GButton _btnClose;
     private GButton _btnFriend;
     private GButton _btnWorld;
+    private GButton _btnBag;
 
     public MainView() : base(new() { "main", "common" }, "MainView", ViewType.VIEW, ViewLayerType.TOP_LAYER)
     {
@@ -15,15 +16,17 @@ public class MainView : BaseView
 
     protected override void OnInit()
     {
-        _btnStart = contentPane.GetChild("btnStart") as GButton;
-        _btnClose = contentPane.GetChild("btnClose") as GButton;
-        _btnFriend = contentPane.GetChild("btnFriend") as GButton;
-        _btnWorld = contentPane.GetChild("btnWorld") as GButton;
+        _btnStart = ContentPane.GetChild("btnStart") as GButton;
+        _btnClose = ContentPane.GetChild("btnClose") as GButton;
+        _btnFriend = ContentPane.GetChild("btnFriend") as GButton;
+        _btnWorld = ContentPane.GetChild("btnWorld") as GButton;
+        _btnBag = ContentPane.GetChild("btnBag") as GButton;
 
         _btnStart.onClick.Add(OnClickBtn);
         _btnClose.onClick.Add(OnClickBtn);
         _btnFriend.onClick.Add(OnClickBtn);
         _btnWorld.onClick.Add(OnClickBtn);
+        _btnBag.onClick.Add(OnClickBtn);
     }
 
     protected override void OnShown()
@@ -49,6 +52,10 @@ public class MainView : BaseView
         else if (sender == _btnWorld)
         {
             wxOpenContext.SendGroupFriendMessage();
+        }
+        else if (sender == _btnBag)
+        {
+            ViewManager.GetInstance().Show(typeof(BagView));
         }
     }
 

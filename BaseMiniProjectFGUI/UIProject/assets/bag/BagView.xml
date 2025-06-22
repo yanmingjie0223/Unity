@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="750,1334">
+  <displayList>
+    <graph id="n3_yeqb" name="n3" xy="0,0" size="750,1334" type="rect" lineColor="#ff006666" fillColor="#ff006666">
+      <relation target="" sidePair="width-width,height-height"/>
+    </graph>
+    <image id="n12_kvod" name="n12" src="kvod0" fileName="image/avatar.jpg" xy="297,589"/>
+    <component id="n13_kvod" name="btnReturn" src="bg9v0" fileName="btn/BtnTexture.xml" pkg="34dfamg7" xy="46,45" size="44,44">
+      <relation target="" sidePair="left-left,top-top"/>
+      <Button icon="ui://34dfamg7fead9"/>
+    </component>
+  </displayList>
+</component>

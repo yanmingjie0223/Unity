@@ -3,9 +3,9 @@
     private BaseModel _model;
     private BaseView _view;
 
-    public BaseModel model { get { return _model; } set { _model = value; } }
+    public BaseModel Model { get { return _model; } set { _model = value; } }
 
-    public BaseView view { get { return _view; } set { _view = value; } }
+    public BaseView View { get { return _view; } set { _view = value; } }
 
     public void Destroy()
     {

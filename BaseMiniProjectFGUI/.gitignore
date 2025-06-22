@@ -1,6 +1,7 @@
 .vs/
 Temp/
 Logs/
+MemoryCaptures/
 obj/
 *_Build/
 *.csproj

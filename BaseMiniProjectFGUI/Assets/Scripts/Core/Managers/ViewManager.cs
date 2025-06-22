@@ -33,22 +33,22 @@ public class ViewManager : Singleton<ViewManager>
 
         var key = V.Name;
         _views.TryGetValue(key, out BaseView view);
-        if (view != null && !view.isDestroy)
+        if (view != null && !view.IsDestroy)
         {
-            if (view.viewData != null && view.viewData != viewData)
+            if (view.ViewData != null && view.ViewData != viewData)
             {
-                view.viewData.Destroy();
+                view.ViewData.Destroy();
             }
-            view.viewData = viewData;
+            view.ViewData = viewData;
         }
         else
         {
             var ctrl = (BaseCtrl)Activator.CreateInstance(C);
             var model = ModelManager.GetInstance().GetModel(M.Name);
             view = (BaseView)Activator.CreateInstance(V);
-            view.model = model;
-            view.ctrl = ctrl;
-            view.viewData = viewData;
+            view.Model = model;
+            view.Ctrl = ctrl;
+            view.ViewData = viewData;
             _views.Add(key, view);
         }
 
@@ -77,20 +77,20 @@ public class ViewManager : Singleton<ViewManager>
 
         var key = V.Name;
         _views.TryGetValue(key, out BaseView view);
-        if (view != null && !view.isDestroy)
+        if (view != null && !view.IsDestroy)
         {
-            if (view.viewData != null && view.viewData != viewData)
+            if (view.ViewData != null && view.ViewData != viewData)
             {
-                view.viewData.Destroy();
+                view.ViewData.Destroy();
             }
-            view.viewData = viewData;
+            view.ViewData = viewData;
         }
         else
         {
             var model = ModelManager.GetInstance().GetModel(M.Name);
             view = (BaseView)Activator.CreateInstance(V);
-            view.model = model;
-            view.viewData = viewData;
+            view.Model = model;
+            view.ViewData = viewData;
             _views.Add(key, view);
         }
 
@@ -118,18 +118,18 @@ public class ViewManager : Singleton<ViewManager>
 
         var key = V.Name;
         _views.TryGetValue(key, out BaseView view);
-        if (view != null && !view.isDestroy)
+        if (view != null && !view.IsDestroy)
         {
-            if (view.viewData != null && view.viewData != viewData)
+            if (view.ViewData != null && view.ViewData != viewData)
             {
-                view.viewData.Destroy();
+                view.ViewData.Destroy();
             }
-            view.viewData = viewData;
+            view.ViewData = viewData;
         }
         else
         {
             view = (BaseView)Activator.CreateInstance(V);
-            view.viewData = viewData;
+            view.ViewData = viewData;
             _views.Add(key, view);
         }
 
@@ -167,10 +167,10 @@ public class ViewManager : Singleton<ViewManager>
     public void SwitchLayer(Type V, string layer, int index)
     {
         var view = GetView(V);
-        if (view != null && view.layer != layer)
+        if (view != null && view.Layer != layer)
         {
             view.RemoveFromParent();
-            view.layer = layer;
+            view.Layer = layer;
             var layerCom = LayerManager.GetInstance().GetLayer(layer);
             layerCom.AddChildAt(view, index);
         }
@@ -179,10 +179,10 @@ public class ViewManager : Singleton<ViewManager>
     public void SwitchLayer(Type V, string layer)
     {
         var view = GetView(V);
-        if (view != null && view.layer != layer)
+        if (view != null && view.Layer != layer)
         {
             view.RemoveFromParent();
-            view.layer = layer;
+            view.Layer = layer;
             var layerCom = LayerManager.GetInstance().GetLayer(layer);
             layerCom.AddChild(view);
         }
@@ -229,7 +229,7 @@ public class ViewManager : Singleton<ViewManager>
         var eventManger = EventManager.GetInstance();
         if (layer == "")
         {
-            layer = view.layer;
+            layer = view.Layer;
         }
 
         var layerCom = layerManager.GetLayer(layer);

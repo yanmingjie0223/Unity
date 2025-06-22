@@ -24,5 +24,9 @@
       <relation target="" sidePair="center-center,bottom-bottom"/>
       <Button title="开启榜" titleColor="#ff9966" titleFontSize="30" icon="ui://34dfamg7fead8"/>
     </component>
+    <component id="n15_kvod" name="btnBag" src="c8gv2" fileName="btn/BtnText.xml" pkg="34dfamg7" xy="10,1148" size="175,89">
+      <relation target="" sidePair="center-center,bottom-bottom"/>
+      <Button title="背包" titleColor="#ff9966" titleFontSize="30" icon="ui://34dfamg7fead8"/>
+    </component>
   </displayList>
 </component>
