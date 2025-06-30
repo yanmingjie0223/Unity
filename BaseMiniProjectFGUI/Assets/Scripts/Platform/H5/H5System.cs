@@ -72,6 +72,14 @@ namespace Assets.Scripts.Platform
         {
         }
 
+        public void UpdateVersion()
+        {
+        }
+
+        public void OnShow(Action<ShowListenerResult> action)
+        {
+        }
+
     }
 
 }

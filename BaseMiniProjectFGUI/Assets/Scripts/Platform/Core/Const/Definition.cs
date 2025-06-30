@@ -49,6 +49,46 @@ namespace Assets.Scripts.Platform
         public double gender = 0;
     }
 
+    public class ResultReferrerInfo
+    {
+        /// <summary>
+        /// 来源小程序或公众号或App的 appId
+        /// </summary>        
+        public string appId;
+        /// <summary>
+        /// 来源小程序传过来的数据，scene=1037或1038时支持
+        /// </summary>        
+        public Dictionary<string, string> extraData;
+    }
+
+    public class ShowListenerResult
+    {
+        /// <summary>
+        /// 查询参数
+        /// </summary>
+        public Dictionary<string, string> query;
+        /// <summary>
+        /// 当场景为由从另一个小程序或公众号或App打开时，返回此字段
+        /// </summary>
+        public ResultReferrerInfo referrerInfo;
+        /// <summary>
+        /// 场景值
+        /// </summary>
+        public double scene;
+        /// <summary>
+        /// 从微信群聊/单聊打开小程序时，chatType 表示具体微信群聊/单聊类型
+        /// 1	微信联系人单聊
+        /// 2	企业微信联系人单聊
+        /// 3	普通微信群聊
+        /// 4	企业微信互通群聊
+        /// </summary>
+        public double? chatType;
+        /// <summary>
+        /// shareTicket
+        /// </summary>
+        public string shareTicket;
+    }
+
     [System.Serializable]
     public class WxMessageData
     {

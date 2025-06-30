@@ -98,6 +98,17 @@ namespace Assets.Scripts.Platform
         /// <param name="query"></param>
         void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query);
 
+        /// <summary>
+        /// 更新游戏版本
+        /// </summary>
+        void UpdateVersion();
+
+        /// <summary>
+        /// 监听OnShow事件
+        /// </summary>
+        /// <param name="action"></param>
+        void OnShow(Action<ShowListenerResult> action);
+
     }
 
 }

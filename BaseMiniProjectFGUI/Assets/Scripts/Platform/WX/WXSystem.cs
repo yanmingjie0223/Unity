@@ -129,7 +129,7 @@ namespace Assets.Scripts.Platform
                     break;
                 case VibrateType.Medium:
                     WX.VibrateShort(new VibrateShortOption() { type = "medium" });
-                    break;  
+                    break;
                 case VibrateType.Heavy:
                     WX.VibrateShort(new VibrateShortOption() { type = "heavy" });
                     break;
@@ -228,6 +228,54 @@ namespace Assets.Scripts.Platform
                 title = title,
                 imageUrl = tf,
                 query = query
+            });
+        }
+
+        public void UpdateVersion()
+        {
+            var updateManager = WX.GetUpdateManager();
+            updateManager.OnCheckForUpdate((res) =>
+            {
+            });
+            updateManager.OnUpdateReady((rt) =>
+            {
+                WX.ShowModal(new ShowModalOption()
+                {
+                    title = "更新提示",
+                    content = "新版本已经准备好，是否重启应用？",
+                    success = (ShowModalSuccessCallbackResult res) =>
+                    {
+                        if (res.confirm)
+                        {
+                            // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                            updateManager.ApplyUpdate();
+                        }
+                    }
+                });
+            });
+            updateManager.OnUpdateFailed((rt) =>
+            {
+                UpdateVersion();
+            });
+        }
+
+        public void OnShow(Action<ShowListenerResult> action)
+        {
+            WX.OnShow((rt) =>
+            {
+                UpdateVersion();
+                action?.Invoke(new()
+                {
+                    query = rt.query,
+                    referrerInfo = new()
+                    {
+                        appId = rt.referrerInfo.appId,
+                        extraData = rt.referrerInfo.extraData,
+                    },
+                    scene = rt.scene,
+                    chatType = rt.chatType,
+                    shareTicket = rt.shareTicket,
+                });
             });
         }
 
