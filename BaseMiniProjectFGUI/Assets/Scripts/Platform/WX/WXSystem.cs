@@ -200,7 +200,7 @@ namespace Assets.Scripts.Platform
             });
         }
 
-        public void ShareAppMessage(string imageUrl, string title, string query)
+        public void ShareAppMessage(string imageUrl, string title, string query, Action<bool> shareCB)
         {
             WX.ShareAppMessage(new ShareAppMessageOption()
             {
@@ -208,9 +208,10 @@ namespace Assets.Scripts.Platform
                 imageUrl = imageUrl,
                 query = query
             });
+            shareCB?.Invoke(true);
         }
 
-        public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query)
+        public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query, Action<bool> shareCB)
         {
             int ShareWidth = width;
             int ShareHeight = height;
@@ -229,6 +230,7 @@ namespace Assets.Scripts.Platform
                 imageUrl = tf,
                 query = query
             });
+            shareCB?.Invoke(true);
         }
 
         public void UpdateVersion()

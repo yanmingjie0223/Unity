@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using Unity.EditorCoroutines.Editor;
 using System.Collections;
 
-public class WeChatMiniGameBuilder : EditorWindow
+public class MiniGameBuilder : EditorWindow
 {
     // 平台枚举
     private enum BuildPlatform
@@ -29,11 +29,12 @@ public class WeChatMiniGameBuilder : EditorWindow
 
     private string buildVersion = "";
     private BuildPlatform buildPlatform = BuildPlatform.WeChat;
+    private string buildAppName = "";
 
     [MenuItem("Tools/一键小游戏打包")]
     public static void ShowWindow()
     {
-        GetWindow<WeChatMiniGameBuilder>("小游戏打包");
+        GetWindow<MiniGameBuilder>("小游戏打包");
     }
 
     private void OnEnable()
@@ -42,12 +43,15 @@ public class WeChatMiniGameBuilder : EditorWindow
         buildVersion = EditorPrefs.GetString(BuildVersionKey, "v0.1");
         // 加载保存的平台选择
         buildPlatform = (BuildPlatform)EditorPrefs.GetInt(BuildPlatformKey, (int)BuildPlatform.WeChat);
+        // 加载保存的应用名称
+        buildAppName = GetAppName();
     }
 
     private void OnGUI()
     {
-        buildVersion = EditorGUILayout.TextField("构建版本:", buildVersion);
-        buildPlatform = (BuildPlatform)EditorGUILayout.EnumPopup("平台:", buildPlatform);
+        buildVersion = EditorGUILayout.TextField("Build Version:", buildVersion);
+        buildPlatform = (BuildPlatform)EditorGUILayout.EnumPopup("Platform:", buildPlatform);
+        buildAppName = EditorGUILayout.TextField("App Name:", buildAppName);
 
         EditorGUILayout.Space();
 
@@ -76,12 +80,12 @@ public class WeChatMiniGameBuilder : EditorWindow
             if (buildPlatform == BuildPlatform.WeChat)
             {
                 PlayerSettings.WebGL.template = "PROJECT:WXTemplate2022";
-                SetScriptingDefines(new string[] { "WEIXINMINIGAME" });
+                SetScriptingDefines(new string[] { "WEIXINMINIGAME;DOTWEEN" });
             }
             else if (buildPlatform == BuildPlatform.DouYin)
             {
-                PlayerSettings.WebGL.template = "APPLICATION:Default";
-                SetScriptingDefines(new string[] { "DOUYINMINIGAME" });
+                PlayerSettings.WebGL.template = "APPLICATION:Minimal";
+                SetScriptingDefines(new string[] { "DOUYINMINIGAME;DOTWEEN" });
             }
             else
             {
@@ -132,6 +136,8 @@ public class WeChatMiniGameBuilder : EditorWindow
             Debug.Log($"已清理文件夹: {releasePath}");
         }
         yield return new EditorWaitForSeconds(3f);
+
+        var argName = "";
         // 保存平台选择
         if (buildPlatform == BuildPlatform.WeChat)
         {
@@ -140,6 +146,7 @@ public class WeChatMiniGameBuilder : EditorWindow
                 EditorUtility.DisplayDialog("错误", "微信小游戏构建失败", "确定");
                 yield break;
             }
+            argName = $"WX_{buildAppName}";
         }
         else if (buildPlatform == BuildPlatform.DouYin)
         {
@@ -148,13 +155,14 @@ public class WeChatMiniGameBuilder : EditorWindow
                 EditorUtility.DisplayDialog("错误", "抖音小游戏构建失败", "确定");
                 yield break;
             }
+            argName = $"DY_{buildAppName}";
         }
         else
         {
             EditorUtility.DisplayDialog("错误", "未知平台选择", "确定");
         }
 
-        BuildMiniGameFinishBat();
+        BuildMiniGameFinishBat(new string[] { $"{argName}" });
     }
 
     private void BuildChangeVersion()
@@ -170,6 +178,15 @@ public class WeChatMiniGameBuilder : EditorWindow
             string pattern = @"(appVersion\s*=\s*"")(v\d+\.\d+)("")";
             string replacement = $"appVersion = \"{buildVersion}\"";
             content = Regex.Replace(content, pattern, replacement);
+            // 替换appVersion的完整版本号
+            string pattern3 = @"(appVersion\s*=\s*"")(v\d+\.\d+\.\d+)("")";
+            string replacement3 = $"appVersion = \"{buildVersion}\"";
+            content = Regex.Replace(content, pattern3, replacement3);
+
+            // 替换appName
+            pattern = @"(appName\s*=\s*"")(.*?)("")";
+            replacement = $"appName = \"{buildAppName}\"";
+            content = Regex.Replace(content, pattern, replacement);
 
             File.WriteAllText(filePath, content);
             Debug.Log("GameConfig.cs modified successfully.");
@@ -182,6 +199,34 @@ public class WeChatMiniGameBuilder : EditorWindow
         {
             Debug.LogError("GameConfig.cs not found at: " + filePath);
         }
+    }
+
+    private string GetAppName()
+    {
+        string filePath = Path.Combine(Application.dataPath, "Scripts/Configs/GameConfig.cs");
+
+        if (File.Exists(filePath))
+        {
+            string content = File.ReadAllText(filePath);
+
+            // 在这里进行你的修改
+            // 例如替换特定文本
+            string pattern = @"(appName\s*=\s*"")(.*?)("")";
+            Match match = Regex.Match(content, pattern);
+            if (match.Success)
+            {
+                return match.Groups[2].Value;
+            }
+            else
+            {
+                Debug.LogError("未找到appName定义");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameConfig.cs not found at: " + filePath);
+        }
+        return "";
     }
 
     private bool BuildYooAsset()
@@ -281,7 +326,7 @@ public class WeChatMiniGameBuilder : EditorWindow
         }
     }
 
-    private void BuildMiniGameFinishBat()
+    private void BuildMiniGameFinishBat(string[] batArguments = null)
     {
         // 获取相对路径
         string relativePath;
@@ -309,7 +354,7 @@ public class WeChatMiniGameBuilder : EditorWindow
         }
 
         // 创建进程启动信息
-        ProcessStartInfo processStartInfo = new(batFilePath)
+        ProcessStartInfo processStartInfo = new ProcessStartInfo(batFilePath)
         {
             UseShellExecute = false,
             RedirectStandardOutput = true,
@@ -317,8 +362,14 @@ public class WeChatMiniGameBuilder : EditorWindow
             CreateNoWindow = true
         };
 
+        // 添加参数（如果存在）
+        if (batArguments != null && batArguments.Length > 0)
+        {
+            processStartInfo.Arguments = string.Join(" ", batArguments);
+        }
+
         // 启动进程
-        using (Process process = new())
+        using (Process process = new Process())
         {
             process.StartInfo = processStartInfo;
             process.Start();

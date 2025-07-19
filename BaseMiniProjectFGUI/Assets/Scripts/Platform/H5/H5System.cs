@@ -64,12 +64,14 @@ namespace Assets.Scripts.Platform
         {
         }
 
-        public void ShareAppMessage(string imageUrl, string title, string query)
+        public void ShareAppMessage(string imageUrl, string title, string query, Action<bool> shareCB)
         {
+            shareCB?.Invoke(true);
         }
 
-        public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query)
+        public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query, Action<bool> shareCB)
         {
+            shareCB?.Invoke(true);
         }
 
         public void UpdateVersion()

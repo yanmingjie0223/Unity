@@ -85,7 +85,8 @@ namespace Assets.Scripts.Platform
         /// <param name="imageUrl"></param>
         /// <param name="title"></param>
         /// <param name="query"></param>
-        void ShareAppMessage(string imageUrl, string title, string query);
+        /// <param name="shareCB"></param>
+        void ShareAppMessage(string imageUrl, string title, string query, Action<bool> shareCB);
 
         /// <summary>
         /// 分享截图信息
@@ -96,7 +97,8 @@ namespace Assets.Scripts.Platform
         /// <param name="height"></param>
         /// <param name="title"></param>
         /// <param name="query"></param>
-        void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query);
+        /// <param name="shareCB"></param>
+        void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query, Action<bool> shareCB);
 
         /// <summary>
         /// 更新游戏版本

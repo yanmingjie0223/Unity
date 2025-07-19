@@ -13,6 +13,37 @@ public class GameConfig
 #else
     public static ServerType serverType = ServerType.Web;
 #endif
+
+    /// <summary>
+    /// app名字
+    /// </summary>
+    public static readonly string appName = "MiniGame";
+
+    /// <summary>
+    /// cdn跟地址
+    /// </summary>
+#if UNITY_EDITOR
+    public static readonly string cdnRoot = $"{appName}";
+    public static readonly string shareUrlRoot = "";
+#elif WEIXINMINIGAME
+    public static readonly string cdnRoot = $"{appName}";
+    public static readonly string shareUrlRoot = $"{cdnRoot}/Wx/Share/";
+#elif DOUYINMINIGAME
+    public static readonly string cdnRoot = $"{appName}";
+    public static readonly string shareUrlRoot = $"{cdnRoot}/Dy/Share/";
+#endif
+
+    /// <summary>
+    /// http请求根地址
+    /// </summary>
+#if UNITY_EDITOR
+    public static string httpRoot = "http://127.0.0.1:3080";
+#elif WEIXINMINIGAME
+    public static string httpRoot = "http://127.0.0.1:3080";
+#elif DOUYINMINIGAME
+    public static string httpRoot = "http://127.0.0.1:3080";
+#endif
+
     /// <summary>
     /// app版本号
     /// </summary>
@@ -34,23 +65,5 @@ public class GameConfig
     /// 屏幕高度
     /// </summary>
     public static readonly int initHeight = 1334;
-
-    /// <summary>
-    /// cdn跟地址
-    /// </summary>
-    public static readonly string cdnRoot = "";
-    /// <summary>
-    /// 分享地址
-    /// </summary>
-    public static readonly string shareUrl = $"{cdnRoot}/Wx/Share/fengmian.png";
-
-    /// <summary>
-    /// http请求根地址
-    /// </summary>
-#if UNITY_EDITOR
-    public static string httpRoot = "http://127.0.0.1:3080";
-#else
-    public static string httpRoot = "";
-#endif
 
 }

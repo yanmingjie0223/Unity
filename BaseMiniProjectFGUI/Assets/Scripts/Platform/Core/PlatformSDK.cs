@@ -54,6 +54,14 @@ namespace Assets.Scripts.Platform
                     _localStorage = new WXStorage();
 #endif
                     break;
+                case PlatformType.DY:
+#if !UNITY_EDITOR && DOUYINMINIGAME
+                    _videoExpo = new DYVideoExpo();
+                    _system = new DYSystem();
+                    _openContext = DYOpenContext.GetInstance();
+                    _localStorage = new DYStorage();
+#endif
+                    break;
                 default:
                     Debug.LogError($"Unprocessed PlatformType: {_type}");
                     break;
