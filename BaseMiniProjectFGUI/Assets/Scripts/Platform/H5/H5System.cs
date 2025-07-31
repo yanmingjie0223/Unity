@@ -69,6 +69,11 @@ namespace Assets.Scripts.Platform
             shareCB?.Invoke(true);
         }
 
+        public void ShareTemplateAppMessage(string templateId, string title, string query, Action<bool> shareCB)
+        {
+            shareCB?.Invoke(true);
+        }
+
         public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query, Action<bool> shareCB)
         {
             shareCB?.Invoke(true);

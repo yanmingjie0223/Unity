@@ -89,6 +89,15 @@ namespace Assets.Scripts.Platform
         void ShareAppMessage(string imageUrl, string title, string query, Action<bool> shareCB);
 
         /// <summary>
+        /// 分享模板
+        /// </summary>
+        /// <param name="templateId"></param>
+        /// <param name="title"></param>
+        /// <param name="query"></param>
+        /// <param name="shareCB"></param>
+        void ShareTemplateAppMessage(string templateId, string title, string query, Action<bool> shareCB);
+
+        /// <summary>
         /// 分享截图信息
         /// </summary>
         /// <param name="x"></param>

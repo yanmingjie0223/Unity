@@ -165,7 +165,7 @@ namespace Assets.Scripts.Platform
             {
                 var shareJson = new TTSDK.UNBridgeLib.LitJson.JsonData();
                 shareJson["title"] = title;
-                shareJson["imageUrl"] = imageUrl;
+                shareJson["templateId"] = "";
                 shareJson["query"] = query;
                 shareJson["channel"] = shareOption.channel;
                 return new TTShare.ShareParam(
@@ -182,6 +182,29 @@ namespace Assets.Scripts.Platform
             var shareJson = new TTSDK.UNBridgeLib.LitJson.JsonData();
             shareJson["title"] = title;
             shareJson["imageUrl"] = imageUrl;
+            shareJson["query"] = query;
+            TT.ShareAppMessage(
+                shareJson, 
+                (Dictionary<string, object> data) =>
+                {
+                    shareCB?.Invoke(true);
+                },
+                (string errMsg) =>
+                {
+                    shareCB?.Invoke(false);
+                },
+                () =>
+                {
+                    shareCB?.Invoke(true);
+                }
+            );
+        }
+
+        public void ShareTemplateAppMessage(string templateId, string title, string query, Action<bool> shareCB)
+        {
+            var shareJson = new TTSDK.UNBridgeLib.LitJson.JsonData();
+            shareJson["title"] = title;
+            shareJson["templateId"] = templateId;
             shareJson["query"] = query;
             TT.ShareAppMessage(
                 shareJson, 

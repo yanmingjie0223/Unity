@@ -211,6 +211,17 @@ namespace Assets.Scripts.Platform
             shareCB?.Invoke(true);
         }
 
+        public void ShareTemplateAppMessage(string templateId, string title, string query, Action<bool> shareCB)
+        {
+            WX.ShareAppMessage(new ShareAppMessageOption()
+            {
+                title = title,
+                imageUrlId = templateId,
+                query = query
+            });
+            shareCB?.Invoke(true);
+        }
+
         public void ShareAppMessageByScreenshot(int x, int y, int width, int height, string title, string query, Action<bool> shareCB)
         {
             int ShareWidth = width;
